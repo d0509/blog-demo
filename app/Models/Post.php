@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plank\Mediable\Mediable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use HasFactory,SoftDeletes,HasSlug;
+    use HasFactory,SoftDeletes,HasSlug,Mediable;
 
     protected $fillable = [ 
         'status',

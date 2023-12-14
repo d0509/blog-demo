@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 Route::get('home', function () {
     return view('backend.pages.login');
 });
@@ -35,6 +35,7 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'signUp'])->name('signUp');
 });
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
@@ -48,7 +49,4 @@ Route::middleware('auth')->group(function () {
         Route::post('categories/change-status',CategoryStatusController::class)->name('categories.status');
     });
 
-    Route::middleware('user')->prefix('user')->group(function () {
-        Route::get('home', [HomeController::class, 'index'])->name('home');
-    });
 });

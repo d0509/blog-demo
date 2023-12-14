@@ -105,8 +105,47 @@
                         $('#dataTable').DataTable().ajax.reload();
                     }
                 });
-
             });
         });
+
+        function deletePost(id) {
+            var id = id;
+            var url = "{{ route('admin.blogs.destroy', ':id') }}";
+            url = url.replace(':id', id);
+            var token = "{{ csrf_token() }}";
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to delete this category?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        dataType: "JSON",
+                        data: {
+                            id: id,
+                            "_token": "{{ csrf_token() }}",
+
+                        },
+                        success: function(response) {
+                            let msg = response.message;
+                            if (msg) {
+                                Swal.fire('Success!', msg, 'success');
+                            }
+                            $('#dataTable').DataTable().ajax.reload();
+                        }
+                    });
+                }
+
+            })
+        }
     </script>
 @endsection

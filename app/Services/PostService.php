@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Post;
+use Plank\Mediable\Facades\MediaUploader;
 use Yajra\DataTables\Facades\DataTables;
 
 class PostService
@@ -17,7 +18,7 @@ class PostService
 
     public function collection()
     {
-        $data = Post::select('id','category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
+        $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
         return DataTables::of($data)
             ->addColumn('action', function ($row) {
                 $editURL = route('admin.blogs.edit', ['blog' => $row->id]);
@@ -34,7 +35,8 @@ class PostService
             ->make(true);
     }
 
-    public function resource($id){
+    public function resource($id)
+    {
         // dd($id);
         $blog = Post::findOrFail($id);
         return $blog;
@@ -47,13 +49,31 @@ class PostService
         // session()->flash('success', 'Blog created successfully');
         // return $post;
 
-        $category = $id ? $this->postObj->find($id) : $this->postObj;
+        $post = $id ? $this->postObj->find($id) : $this->postObj;
         
-        $category->fill($inputs->all())->save();
+        $post->fill($inputs->all())->save();
 
         $message = $id ?  __('entity.entityUpdated', ['entity' => 'Post']) :  __('entity.entityCreated', ['entity' => 'Post']);
-        $response = ['message' => $message];
-        return $response;
+       
+        $media = MediaUploader::fromSource($inputs->file('banner'))
+            ->toDisk('public')
+            ->toDirectory('banner')
+            ->upload();
+
+        $post->attachMedia($media, 'banner');
+        session()->flash('success', $message);
+        return $post;
+    }
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        // dd($post);
+        if ($post) {
+            $post->delete();
+        }
+
+        // session()->flash('success', 'Category deleted successfully');
+        return response()->json(['message' => 'Category deleted successfully']);
     }
 
 }
