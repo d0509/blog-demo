@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Services\PostService;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\Store;
+use App\Models\Post;
+use App\Services\CategoryService;
+
+class PostController extends Controller
+{
+
+    protected $postService,$categoryService;
+
+    public function __construct()
+    {
+        $this->postService = new PostService;
+        $this->categoryService = new CategoryService;
+    }
+
+    public function index(Request $request)
+    {
+        if($request->ajax()){
+            $companies =  $this->postService->collection();
+            return $companies;
+        }
+        return view('backend.pages.blog.index');
+    }
+
+    public function create()
+    {
+        $category = $this->categoryService->collection(true);
+        return view('backend.pages.blog.create',[
+            'categories' => $category
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Store $request)
+    {
+       $this->postService->store($request);
+       return redirect()->route('admin.blogs.index');
+    }
+
+    public function show(Post $blog)
+    {
+        $data = $this->postService->resource($blog->id);
+        return view('backend.pages.blog.show',[
+            'blog' => $data,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Post $blog)
+    {
+        $category = $this->categoryService->collection(true);
+        $data = $this->postService->resource($blog->id);
+        return view('backend.pages.blog.create',[
+            'blog' => $data,
+            'categories' => $category,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
