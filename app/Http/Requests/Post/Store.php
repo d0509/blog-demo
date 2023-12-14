@@ -21,12 +21,21 @@ class Store extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|min:3',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required',
             'author' => 'required|string|min:3',
             'status' => 'not_in:default|required',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['banner'] = 'nullable|image';
+        } else {
+            $rules['banner'] = 'image|required';
+        }
+
+        return $rules;
+         
     }
 }

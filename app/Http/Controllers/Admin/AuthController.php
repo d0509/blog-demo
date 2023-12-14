@@ -25,12 +25,14 @@ class AuthController extends Controller
 
     public function signIn(Login $request)
     {
-       return $this->authService->signIn($request->validated());
-        // if (Auth::user()->hasRole(config('site.roles.admin'))) {
-        //     return redirect()->route('admin.dashboard');
-        // } elseif (Auth::user()->hasRole(config('site.roles.user'))) {
-        //     return redirect()->route('home');
-        // }
+         $this->authService->signIn($request->validated());
+        if (Auth::user()) {
+            if (Auth::user()->hasRole(config('site.roles.admin'))) {
+                return redirect()->route('admin.dashboard');
+            } elseif (Auth::user()->hasRole(config('site.roles.user'))) {
+                return redirect()->route('home');
+            }
+        }
     }
 
     public function register()

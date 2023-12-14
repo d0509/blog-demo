@@ -30,11 +30,11 @@
                             </div>
                     </div>
                     <div class="form-group row mt-5">
-                        <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Blog</label>
                         <div class="col-sm-10 ">
                             <select class="form-select changeUserStatus" aria-label="Default select example"
                                 name="category_id">
-                                <option value="default"> Please select a status for Blog </option>
+                                <option value="default"> Please select a Category for Blog </option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         @if (isset($blog)) {{ $category->id == $blog->category->id ? 'selected' : '' }} @endif>
@@ -74,7 +74,7 @@
                             @enderror
                                 </div>
                         </div>
-                        {{-- <div class="form-group row mt-5">
+                        <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Banner</label>
                             <div class="col-sm-10">
                                 <input type="file" id="banner" name="banner" class="form-control">
@@ -82,13 +82,13 @@
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror
                             </div>
-                        </div> --}}
+                        </div>
                         <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
                             <div class="col-sm-10">
                                 <select class="form-select changeUserStatus" aria-label="Default select example"
                                     name="status">
-                                    <option value="default"> Please select a status for status for the post </option>
+                                    <option value="default"> Please select a status  </option>
                                     <option value="publish"
                                         @if (isset($blog)) {{ $blog->status == 'publish' ? 'selected' : '' }}    @endif>
                                         Publish</option>
