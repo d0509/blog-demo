@@ -86,6 +86,7 @@
                         @if (isset($blog) &&  $media = $blog->media()->first())
                         <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Old Banner</label>
+                            <input type="hidden" name="old_banner" value="{{$media->id}}">
                             <div class="col-sm-10">
                                 <img src="{{ asset('storage/banner/' . $media->filename.'.'.$media->extension) }}" alt="Old Banner" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
                             </div>

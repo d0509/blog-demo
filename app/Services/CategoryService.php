@@ -23,7 +23,7 @@ class CategoryService
             return DataTables::of($data)
                 ->addColumn('action', function ($row) {
                     $editURL = route('admin.categories.edit', ['category' => $row->id]);
-                    $btn = '<div class="d-flex justify-content-space"><a class="text-white w-3 btn btn-danger mr-2" onclick="deleteCategory(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $editURL . '" class="text-white w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
+                    $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteCategory(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $editURL . '" class="text-white  w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
                     return $btn;
                 })
                 ->orderColumn('name', function ($query, $order) {
