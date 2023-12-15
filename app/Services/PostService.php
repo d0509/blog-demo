@@ -67,9 +67,10 @@ class PostService
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        // dd($post);
+        $postBannerImage = $post->firstMedia('banner');
         if ($post) {
             $post->delete();
+            $postBannerImage->delete();
         }
 
         // session()->flash('success', 'Category deleted successfully');
