@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Post;
 use Plank\Mediable\Facades\MediaUploader;
+use Plank\Mediable\Media;
 use Yajra\DataTables\Facades\DataTables;
 
 class PostService
@@ -44,25 +45,31 @@ class PostService
 
     public function upsert($inputs, $id = null)
     {
-        // $post = $this->postObj->fill($inputs->validated());
-        // $post->save();
-        // session()->flash('success', 'Blog created successfully');
-        // return $post;
-
         $post = $id ? $this->postObj->find($id) : $this->postObj;
-        
-        $post->fill($inputs->all())->save();
 
-        $message = $id ?  __('entity.entityUpdated', ['entity' => 'Post']) :  __('entity.entityCreated', ['entity' => 'Post']);
-       
-        $media = MediaUploader::fromSource($inputs->file('banner'))
-            ->toDisk('public')
-            ->toDirectory('banner')
-            ->upload();
+        $post->fill($inputs->except('old_banner'));
+        $post->save();
+        $message = $id ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
 
-        $post->attachMedia($media, 'banner');
+        $this->handleImageUpload($inputs, $post);
         session()->flash('success', $message);
         return $post;
+    }
+    public function handleImageUpload($request, $post)
+    {
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $newFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $imageUploader = MediaUploader::fromSource($file)->useFilename($newFileName);
+            
+            if ($oldImage = $post->firstMedia('banner')) {
+                $imageUploader->replace($oldImage);
+                $post->syncMedia($oldImage, 'banner');
+            } else {
+                
+                $post->attachMedia($imageUploader->toDestination('public', 'banner')->upload(), 'banner');
+            }
+        }
     }
     public function destroy($id)
     {
@@ -76,5 +83,4 @@ class PostService
         // session()->flash('success', 'Category deleted successfully');
         return response()->json(['message' => 'Category deleted successfully']);
     }
-
 }
