@@ -10,5 +10,6 @@ return[
     'roles' => [
         'admin' => 'admin' ,
         'user' => 'user'
-    ]
+    ],
+    'date_format' => 'd-m-Y',
 ];

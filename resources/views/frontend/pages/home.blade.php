@@ -29,8 +29,8 @@
             <div class="card-body">
                 
                 <p class="card-text">
-                <div class="row" >
-                    <p>{!! $blog->title !!}</p>
+                <div class="row" style="width: 50px">
+                    {!! $blog->title !!}
 
                 </div>
                 

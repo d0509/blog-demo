@@ -48,8 +48,10 @@ class AuthService
                         'email' => 'Your provided credentials could not be verified.'
                     ]);
                 }
-            } else {
-                session()->flash('danger', 'You are not approved by the Admin. To login please contact admin');
+            } elseif($user->status == 'pending') {
+                throw ValidationException::withMessages([
+                    'email' => 'You are not approved by the admin. Please contact admin to login.'
+                ]);
             }
         } else {
             session()->flash('danger', 'User with such credential does not exist!');
