@@ -19,17 +19,21 @@ class PostService
 
     public function collection()
     {
-        $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
+        $data = Post::select('posts.id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category:id,name');
         return DataTables::of($data)
+            ->addColumn('category_name', function ($row) {
+                return $row->category->name;
+            })
             ->addColumn('action', function ($row) {
                 $editURL = route('admin.blogs.edit', ['blog' => $row->id]);
-                $showURL = route('admin.blogs.show',['blog' => $row->id]);
+                $showURL = route('admin.blogs.show', ['blog' => $row->id]);
                 $btn = '<div class="d-flex justify-content-between"><a class="text-white w-3 btn btn-danger mr-2" onclick="deletePost(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $showURL . '" class="text-white w-3 btn btn-primary delete_event mr-2"> <i class="fa-solid fa-eye"></i></a><a href="' . $editURL . '" class="text-white w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
                 return $btn;
             })
             ->orderColumn('title', function ($query, $order) {
                 $query->orderBy('id', $order);
             })
+
             ->rawColumns(['action', 'title'])
             ->setRowId('id')
             ->addIndexColumn()
@@ -61,12 +65,12 @@ class PostService
             $file = $request->file('banner');
             $newFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $imageUploader = MediaUploader::fromSource($file)->useFilename($newFileName);
-            
+
             if ($oldImage = $post->firstMedia('banner')) {
                 $imageUploader->replace($oldImage);
                 $post->syncMedia($oldImage, 'banner');
             } else {
-                
+
                 $post->attachMedia($imageUploader->toDestination('public', 'banner')->upload(), 'banner');
             }
         }
@@ -79,8 +83,6 @@ class PostService
             $post->delete();
             $postBannerImage->delete();
         }
-
-        // session()->flash('success', 'Category deleted successfully');
         return response()->json(['message' => 'Category deleted successfully']);
     }
 }
