@@ -51,8 +51,8 @@
                         <div class="col-sm-10 ">
                             <textarea {{ old('description') }} name="description" id="summernote" class="form-control " placeholder="Description">
                             @if (isset($blog))
-{{ old('description', $blog->description) }}@else{{ old('description') }}
-@endif
+                                {{ old('description', $blog->description) }}@else{{ old('description') }}
+                                @endif
                             </textarea>
                             @error('description')
                                 <span class="text-danger">
@@ -83,6 +83,14 @@
                                 @enderror
                             </div>
                         </div>
+                        @if (isset($blog) &&  $media = $blog->media()->first())
+                        <div class="form-group row mt-5">
+                            <label for="staticEmail" class="col-sm-2 col-form-label">Old Banner</label>
+                            <div class="col-sm-10">
+                                <img src="{{ asset('storage/banner/' . $media->filename.'.'.$media->extension) }}" alt="Old Banner" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                            </div>
+                        </div>
+                        @endif
                         <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Status</label>
                             <div class="col-sm-10">
@@ -102,7 +110,7 @@
                             </div>
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block"> Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-4"> Submit</button>
                         </form>
                     </div>
         </main>
