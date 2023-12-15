@@ -41,4 +41,10 @@ class Post extends Model
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('title', 'like', '%' . $keyword . '%')
+                     ->orWhere('description', 'like', '%' . $keyword . '%');
+    }
 }
