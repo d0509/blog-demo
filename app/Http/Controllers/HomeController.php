@@ -13,10 +13,25 @@ class HomeController extends Controller
     {
         $this->postService = new PostService;
     }
-    public function index(Request $request){
-        $data = $this->postService->collection($request,true);
+    public function index(Request $request)
+    {
+
+        $blogs = $this->postService->collection($request, true);
+        // dd($blogs);
         return view('frontend.pages.home',[
-            'blogs' => $data, 
+            'blogs' => $blogs
+        ]);
+    }
+
+    public function getAjaxListing($request)
+    {
+        $blogs = $this->postService->collection($request, true);
+
+        $htmlView = view('frontend.pages.blog-list', compact('blogs'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html' => $htmlView
         ]);
     }
 }

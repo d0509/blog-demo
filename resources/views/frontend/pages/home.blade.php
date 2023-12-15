@@ -3,55 +3,81 @@
 @section('content')
     <div class="container mt-5">
         <div class="row mb-5">
-            <input type="search" class="form-control col-3" name="query" id="query" placeholder="Search"
-                value="{{ request('search') }}" class="form-control" />
+            <form action="{{ route('home') }}" method="get" class="mb-5 d-flex">
+                <input type="search" class="form-control col-3" id="form1" name="search"
+                    value="{{ request('search') }}" placeholder="search" class="form-control" />
 
-            <button type="submit" class="btn btn-primary ml-2 col-1">
-                Search
-            </button>
+                 <button type="submit"  class="btn btn-primary ml-2 col-1">
+                   Search
+                </button> 
+            </form>
+            
         </div>
 
         <div class="row row-cols-1 row-cols-md-3 g-4" id="searchResults">
-                <div class="col">
-                  
-                </div>
+            @forelse ($blogs as $blog)
+    <div class="col">
+        <div class="card">
+            @forelse ($blog->media as $item)
+              <a href="{{route('posts.show',['post' => $blog])}}">  <img src="{{ asset('storage/banner/' . $item['filename'] . '.' . $item['extension']) }}"
+                    class="card-img-top" alt="Hollywood Sign on The Hill" height="233px" /> </a>
+            @empty
+                <p class="fs-3 text-center"> Given Event doesn't have any image</p>
+            @endforelse
 
+            <div class="card-body">
+                
+                <p class="card-text">
+                <div class="row" style="width: 50px">
+                    {!! Illuminate\Support\Str::limit(strip_tags($blog->description), 10) !!}
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+@empty
+<p class="fs-3 text-center"> {{ __('home_no_events') }} </p>
+@endforelse
         </div>
     </div>
 @endsection
-@section('contentfooter')
+{{-- @section('contentfooter')
     <script>
         $(document).ready(function() {
-            $('#query').on('change', function() {
+            $(document).on('change','#form1', function() {
                 var keyword = $(this).val();
-
+                console.log(keyword);
                 $.ajax({
                     url: "{{ route('home') }}",
                     method: 'GET',
                     data: {
-                        keyword: keyword
+                        // keyword: keyword,
+                        listType: "BLOG-LIST",
                     },
+                    dataType: "json",
                     success: function(data) {
-                        displayResults(data.posts);
+                        if (data.success) {
+                            $("#searchResults").html(data.html)
+                        }
                     }
                 });
             });
+            // function displayResults(posts) {
+            //     var resultsList = $('#searchResults');
+            //     resultsList.empty();
 
-            function displayResults(posts) {
-                var resultsList = $('#searchResults');
-                resultsList.empty();
-
-                if (posts.length > 0) {
-                    posts.forEach(function(post) {
-                        console.log(post);
-                        resultsList.append(
-                            post
-                        );
-                    });
-                } else {
-                    resultsList.append('<li>No results found</li>');
-                }
-            }
+            //     if (posts.length > 0) {
+            //         posts.forEach(function(post) {
+            //             console.log(post);
+            //             resultsList.append(
+            //                 post
+            //             );
+            //         });
+            //     } else {
+            //         resultsList.append('<li>No results found</li>');
+            //     }
+            // }
         });
     </script>
-@endsection
+@endsection --}}

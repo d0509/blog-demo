@@ -42,13 +42,13 @@ class PostService
                 return $blog;
             }
         } else {
-            $keyword = $inputs->input('keyword');
-            if (isset($keyword)) {
-                $posts = Post::with('media')->whereStatus('publish')->search($keyword)->get();
-                return response()->json(['message' => $posts]);
+            if(request('search')){
+                // dd(request('search'));
+                $blogs = Post::whereStatus('publish')->Search(request('search'))->latest()->get();
+                return $blogs;
             } else {
-                $posts = Post::with('media')->whereStatus('publish')->get();
-                return response()->json(['message' => $posts]);
+                $blogs = Post::whereStatus('publish')->latest()->get();
+                return $blogs;
             }
         }
     }
@@ -59,18 +59,34 @@ class PostService
         return $blog;
     }
 
-    public function store($inputs)
+    public function upsert($inputs, $id = null)
     {
-        $post = $this->postObj->fill($inputs->validated());
-        $post->save();
+        $post = $id ? $this->postObj->find($id) : $this->postObj;
+        
+        $post->fill($inputs->all())->save();
 
+        $message = $id ?  __('entity.entityUpdated', ['entity' => 'Post']) :  __('entity.entityCreated', ['entity' => 'Post']);
+       
         $media = MediaUploader::fromSource($inputs->file('banner'))
             ->toDisk('public')
             ->toDirectory('banner')
             ->upload();
 
         $post->attachMedia($media, 'banner');
-        session()->flash('success', 'Blog created successfully');
+        session()->flash('success', $message);
         return $post;
     }
+    
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $postBannerImage = $post->firstMedia('banner');
+        if ($post) {
+            $post->delete();
+            $postBannerImage->delete();
+        }
+
+        return response()->json(['message' => 'Category deleted successfully']);
+    }
+
 }
