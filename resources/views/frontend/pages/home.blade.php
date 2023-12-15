@@ -29,7 +29,7 @@
                 
                 <p class="card-text">
                 <div class="row" style="width: 50px">
-                    {!! Illuminate\Support\Str::limit(strip_tags($blog->description), 10) !!}
+                    {!! $blog->title !!}
 
                 </div>
                 

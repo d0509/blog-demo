@@ -11,9 +11,9 @@ use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use HasFactory,SoftDeletes,HasSlug,Mediable;
+    use HasFactory, SoftDeletes, HasSlug, Mediable;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'status',
         'author',
         'category_id',
@@ -38,13 +38,14 @@ class Post extends Model
         ];
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
     public function scopeSearch($query, $keyword)
     {
-        return $query->where('title', 'like', '%' . $keyword . '%')
-                     ->orWhere('description', 'like', '%' . $keyword . '%');
+        return $query->whereTitle('like', '%' . $keyword . '%');
+        //  ->orWhere('description', 'like', '%' . $keyword . '%');
     }
 }

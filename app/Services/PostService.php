@@ -21,8 +21,8 @@ class PostService
     public function collection($inputs, $isForListing = false)
     {
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
+            $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
             if ($isForListing == false) {
-                $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
                         $editURL = route('admin.blogs.edit', ['blog' => $row->id]);
@@ -37,14 +37,10 @@ class PostService
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
-            } else {
-                $blog = Post::with('media')->latest()->get();
-                return $blog;
-            }
+            } 
         } else {
-            if(request('search')){
-                // dd(request('search'));
-                $blogs = Post::whereStatus('publish')->Search(request('search'))->latest()->get();
+            if (request('search')) {
+                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
                 return $blogs;
             } else {
                 $blogs = Post::whereStatus('publish')->latest()->get();
@@ -62,11 +58,11 @@ class PostService
     public function upsert($inputs, $id = null)
     {
         $post = $id ? $this->postObj->find($id) : $this->postObj;
-        
+
         $post->fill($inputs->all())->save();
 
         $message = $id ?  __('entity.entityUpdated', ['entity' => 'Post']) :  __('entity.entityCreated', ['entity' => 'Post']);
-       
+
         $media = MediaUploader::fromSource($inputs->file('banner'))
             ->toDisk('public')
             ->toDirectory('banner')
@@ -76,7 +72,7 @@ class PostService
         session()->flash('success', $message);
         return $post;
     }
-    
+
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
@@ -88,5 +84,4 @@ class PostService
 
         return response()->json(['message' => 'Category deleted successfully']);
     }
-
 }
