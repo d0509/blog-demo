@@ -9,6 +9,7 @@
                 </div>
 
                 @if (isset($blog))
+                {{dd($blog)}}
                     <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf

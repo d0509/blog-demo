@@ -36,21 +36,21 @@ class CategoryController extends Controller
         return $this->categoryService->store($request);
     }
 
-    public function edit(Category $category)
+    public function edit(String $slug)
     {
-        $data = $this->categoryService->resource($category->id);
+        $data = $this->categoryService->resource($slug);
         return view('backend.pages.category.create', [
             'category' => $data,
         ]);
     }
 
-    public function update(Create $request, Category $category)
+    public function update(Create $request, string $slug)
     {
-        return $this->categoryService->update($request, $category->id);
+        return $this->categoryService->update($request, $slug);
     }
 
     public function destroy(Category $category)
     {
-       return $this->categoryService->destroy($category->id);
+        return $this->categoryService->destroy($category->id);
     }
 }

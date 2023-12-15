@@ -13,7 +13,7 @@
                 </div>
 
                 @if (isset($category))
-                    <form action="{{ route('admin.categories.update', ['category' => $category->id]) }}" method="post">
+                    <form action="{{ route('admin.categories.update', ['category' => $category->slug]) }}" method="post">
                         @csrf
                         @method('PATCH')
                     @else
