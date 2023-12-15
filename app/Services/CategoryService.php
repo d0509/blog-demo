@@ -44,7 +44,7 @@ class CategoryService
                 ->addIndexColumn()
                 ->make(true);
         } else {
-            $data = Category::latest()->get();
+            $data = Category::whereIsActive(1)->get();
             return $data;
         }
     }

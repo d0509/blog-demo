@@ -2,57 +2,56 @@
 @section('title', 'Home Page')
 @section('content')
     <div class="container mt-5">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/041.webp" class="card-img-top"
-                        alt="Hollywood Sign on The Hill" />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.
-                        </p>
-                    </div>
+        <div class="row mb-5">
+            <input type="search" class="form-control col-3" name="query" id="query" placeholder="Search"
+                value="{{ request('search') }}" class="form-control" />
+
+            <button type="submit" class="btn btn-primary ml-2 col-1">
+                Search
+            </button>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="searchResults">
+                <div class="col">
+                  
                 </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/042.webp" class="card-img-top"
-                        alt="Palm Springs Road" />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/043.webp" class="card-img-top"
-                        alt="Los Angeles Skyscrapers" />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" class="card-img-top"
-                        alt="Skyscrapers" />
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">
-                            This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.
-                        </p>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
+@endsection
+@section('contentfooter')
+    <script>
+        $(document).ready(function() {
+            $('#query').on('change', function() {
+                var keyword = $(this).val();
+
+                $.ajax({
+                    url: "{{ route('home') }}",
+                    method: 'GET',
+                    data: {
+                        keyword: keyword
+                    },
+                    success: function(data) {
+                        displayResults(data.posts);
+                    }
+                });
+            });
+
+            function displayResults(posts) {
+                var resultsList = $('#searchResults');
+                resultsList.empty();
+
+                if (posts.length > 0) {
+                    posts.forEach(function(post) {
+                        console.log(post);
+                        resultsList.append(
+                            post
+                        );
+                    });
+                } else {
+                    resultsList.append('<li>No results found</li>');
+                }
+            }
+        });
+    </script>
 @endsection
