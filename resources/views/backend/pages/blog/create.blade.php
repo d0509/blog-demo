@@ -7,9 +7,8 @@
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-3">
                     <h1 class="h3 mb-0 text-gray-800 text-center">Blog</h1>
                 </div>
-
                 @if (isset($blog))
-                    <form action="{{ route('admin.blogs.update', ['blog' => $blog->id]) }}" method="post"
+                    <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')

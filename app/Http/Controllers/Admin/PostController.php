@@ -48,7 +48,7 @@ class PostController extends Controller
 
     public function show(Post $blog)
     {
-        $data = $this->postService->resource($blog->id);
+        $data = $this->postService->resource($blog->slug);
         return view('backend.pages.blog.show',[
             'blog' => $data,
         ]);
@@ -60,7 +60,7 @@ class PostController extends Controller
     public function edit(Post $blog)
     {
         $category = $this->categoryService->collection(true);
-        $data = $this->postService->resource($blog->id);
+        $data = $this->postService->resource($blog->slug);
         return view('backend.pages.blog.create',[
             'blog' => $data,
             'categories' => $category,

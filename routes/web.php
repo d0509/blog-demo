@@ -37,7 +37,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::resource('posts',ControllersPostController::class)->only('show');
+Route::get('posts/{slug}',[ControllersPostController::class,'show'])->name('posts.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');

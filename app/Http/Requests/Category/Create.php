@@ -22,7 +22,7 @@ class Create extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|alpha|unique:categories,name,' ,
+            'name' => 'required|string|unique:categories,name,' ,
             'is_active' => 'required|not_in:default'
         ];
 
