@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Plank\Mediable\Facades\MediaUploader;
+use Plank\Mediable\Media;
 use Yajra\DataTables\Facades\DataTables;
 
 class PostService
@@ -59,20 +60,31 @@ class PostService
     {
         $post = $id ? $this->postObj->find($id) : $this->postObj;
 
-        $post->fill($inputs->all())->save();
+        $post->fill($inputs->except('old_banner'));
+        $post->save();
+        $message = $id ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
 
-        $message = $id ?  __('entity.entityUpdated', ['entity' => 'Post']) :  __('entity.entityCreated', ['entity' => 'Post']);
-
-        $media = MediaUploader::fromSource($inputs->file('banner'))
-            ->toDisk('public')
-            ->toDirectory('banner')
-            ->upload();
-
-        $post->attachMedia($media, 'banner');
+        $this->handleImageUpload($inputs, $post);
         session()->flash('success', $message);
         return $post;
     }
+    
+    public function handleImageUpload($request, $post)
+    {
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $newFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $imageUploader = MediaUploader::fromSource($file)->useFilename($newFileName);
 
+            if ($oldImage = $post->firstMedia('banner')) {
+                $imageUploader->replace($oldImage);
+                $post->syncMedia($oldImage, 'banner');
+            } else {
+
+                $post->attachMedia($imageUploader->toDestination('public', 'banner')->upload(), 'banner');
+            }
+        }
+    }
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
@@ -81,7 +93,6 @@ class PostService
             $post->delete();
             $postBannerImage->delete();
         }
-
         return response()->json(['message' => 'Category deleted successfully']);
     }
 }
