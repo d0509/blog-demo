@@ -19,7 +19,7 @@
     <div class="col">
         <div class="card">
             @forelse ($blog->media as $item)
-              <a href="{{route('posts.show',['post' => $blog])}}">  <img src="{{ asset('storage/banner/' . $item['filename'] . '.' . $item['extension']) }}"
+              <a href="{{route('posts.show',['slug' => $blog->slug])}}">  <img src="{{ asset('storage/banner/' . $item['filename'] . '.' . $item['extension']) }}"
                     class="card-img-top" alt="Hollywood Sign on The Hill" height="233px" /> </a>
             @empty
                 <p class="fs-3 text-center"> Given Event doesn't have any image</p>

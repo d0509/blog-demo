@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Post;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Plank\Mediable\Facades\MediaUploader;
 use Plank\Mediable\Media;
@@ -22,19 +23,26 @@ class PostService
     public function collection($inputs, $isForListing = false)
     {
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')->with('category');
+            $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')
+            ->with('category')
+            ->whereHas('category',function($q){
+                
+            });
             if ($isForListing == false) {
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
-                        $editURL = route('admin.blogs.edit', ['blog' => $row->id]);
-                        $showURL = route('admin.blogs.show', ['blog' => $row->id]);
+                        $editURL = route('admin.blogs.edit', ['blog' => $row->slug]);
+                        $showURL = route('admin.blogs.show', ['blog' => $row->slug]);
                         $btn = '<div class="d-flex justify-content-space"><a class="text-white w-3 btn btn-danger mr-2" onclick="deletePost(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $showURL . '" class="text-white w-3 btn btn-primary delete_event mr-2"> <i class="fa-solid fa-eye"></i></a><a href="' . $editURL . '" class="text-white w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
                         return $btn;
+                    })
+                    ->addColumn('created_at', function ($row) {
+                        return Carbon::parse($row->created_at)->format(config('site.date_format'));
                     })
                     ->orderColumn('title', function ($query, $order) {
                         $query->orderBy('id', $order);
                     })
-                    ->rawColumns(['action', 'title'])
+                    ->rawColumns(['action', 'title','created_at'])
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
@@ -50,25 +58,26 @@ class PostService
         }
     }
 
-    public function resource($id)
+    public function resource($slug)
     {
-        $blog = Post::findOrFail($id);
+        $blog = Post::whereSlug($slug)->first();
         return $blog;
     }
 
-    public function upsert($inputs, $id = null)
+    public function upsert($inputs, $slug = null)
     {
-        $post = $id ? $this->postObj->find($id) : $this->postObj;
+        // dd($slug);
+        $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
-        $message = $id ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
+        $message = $slug ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
 
         $this->handleImageUpload($inputs, $post);
         session()->flash('success', $message);
         return $post;
     }
-    
+
     public function handleImageUpload($request, $post)
     {
         if ($request->hasFile('banner')) {

@@ -9,7 +9,7 @@
                 </div>
 
                 @if (isset($blog))
-                    <form action="{{ route('admin.blogs.update', ['blog' => $blog->id]) }}" method="post"
+                    <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')

@@ -46,9 +46,9 @@ class PostController extends Controller
        return redirect()->route('admin.blogs.index');
     }
 
-    public function show(Post $blog)
+    public function show(String $slug)
     {
-        $data = $this->postService->resource($blog->id);
+        $data = $this->postService->resource($slug);
         return view('backend.pages.blog.show',[
             'blog' => $data,
         ]);
@@ -57,10 +57,10 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $blog)
+    public function edit(string $slug)
     {
         $category = $this->categoryService->collection(true);
-        $data = $this->postService->resource($blog->id);
+        $data = $this->postService->resource($slug);
         return view('backend.pages.blog.create',[
             'blog' => $data,
             'categories' => $category,

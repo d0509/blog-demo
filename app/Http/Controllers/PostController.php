@@ -15,8 +15,8 @@ class PostController extends Controller
         $this->postService = new PostService;
     }
 
-    public function show(Post $post){
-        $post = $this->postService->resource($post->id);
+    public function show(String $slug){
+        $post = $this->postService->resource($slug);
         return view('frontend.pages.show-blog',[
             'post' => $post
         ]);
