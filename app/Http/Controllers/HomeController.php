@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    protected $postService,$categoryService;
+    protected $postService;
+    protected $categoryService;
 
     public function __construct()
     {
