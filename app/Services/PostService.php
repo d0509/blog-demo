@@ -22,7 +22,6 @@ class PostService
 
     public function collection($isForListing = false)
     {
-
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
                 ->with('category')
@@ -57,17 +56,15 @@ class PostService
                     ->make(true);
             }
         } else {
-            if (request('search') == null && request('category_id') == 'empty') {
-                $blogs = Post::whereStatus('publish')->latest()->get();
-                return $blogs;
-            } elseif (request('search') != null && request('category_id') != 'empty') {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
-                return $blogs;
-            } elseif (request('search') == null && request('category_id') != 'empty') {
+            if (request('category_id') && request('category_id') != 'empty') {
                 $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
                 return $blogs;
-            } elseif (!request('search') == null && request('category_id') == 'empty') {
+            }
+            if (request('search')) {
                 $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
+                return $blogs;
+            } else {
+                $blogs = Post::whereStatus('publish')->latest()->get();
                 return $blogs;
             }
         }
@@ -75,7 +72,6 @@ class PostService
 
     public function resource($slug)
     {
-        // dd($slug);
         $blog = Post::whereSlug($slug)->first();
         if (!$blog) {
             return ['message' => "No post found"];

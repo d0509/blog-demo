@@ -7,7 +7,6 @@
             <h1 class="text-center">
                 {{ $post->title }}
             </h1>
-            {{-- {{dd($post->media)}} --}}
             @foreach ($post->media as $media)
                  <img src="{{ asset('storage/banner/' . $media['filename'] . '.' . $media['extension']) }}"
                  class="card-img-top mt-3" alt="Hollywood Sign on The Hill"/> 

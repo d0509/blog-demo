@@ -8,7 +8,7 @@
                     <h1 class="h3 mb-0 text-gray-800 text-center">Blog</h1>
                 </div>
                 @if (isset($blog))
-                {{dd($blog)}}
+                {{-- {{dd($blog)}} --}}
                     <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
