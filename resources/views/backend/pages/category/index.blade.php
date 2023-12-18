@@ -92,8 +92,10 @@
                         id: id,
                         "_token": "{{ csrf_token() }}",
                     },
-                    success: function() {
-                        console.log('updated successfuly');
+                    success: function(response) {
+                        toastr.success(response.message, "Success");
+
+                        console.log(response);
                         $('#dataTable').DataTable().ajax.reload();
                     }
                 });
@@ -128,8 +130,8 @@
                             "_token": "{{ csrf_token() }}",
 
                         },
-                        success: function() {
-                            console.log('company deleted successfully');
+                        success: function(response) {
+                            toastr.success(response.message, "Success");
                             $('#dataTable').DataTable().ajax.reload();
                         }
                     });

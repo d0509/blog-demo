@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Plank\Mediable\Mediable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model
 {
-    use HasFactory,SoftDeletes,HasSlug;
+    use HasFactory, SoftDeletes, HasSlug, Mediable;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'status',
         'author',
         'category_id',
@@ -20,6 +21,11 @@ class Post extends Model
         'description',
     ];
 
+    public function getCreatedAtAttribute($value)
+    {
+        // Change the date format as per your requirement
+        return \Carbon\Carbon::parse($value)->format('d-m-Y');
+    }
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -37,7 +43,15 @@ class Post extends Model
         ];
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('title', 'like', '%' . $keyword . '%');
+    }
+
+                    
 }

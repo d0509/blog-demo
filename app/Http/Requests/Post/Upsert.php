@@ -4,7 +4,7 @@ namespace App\Http\Requests\Post;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Store extends FormRequest
+class Upsert extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +21,21 @@ class Store extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|min:3',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required',
             'author' => 'required|string|min:3',
             'status' => 'not_in:default|required',
         ];
+
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $rules['banner'] = 'nullable|image';
+        } else {
+            $rules['banner'] = 'required|image';
+        }
+
+        return $rules;
+         
     }
 }

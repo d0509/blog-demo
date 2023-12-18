@@ -16,6 +16,6 @@ class CategoryStatusController extends Controller
 
     public function __invoke(Request $request)
     {
-        $this->categoryService->changeStatus($request);
+       return $this->categoryService->changeStatus($request);
     }
 }
