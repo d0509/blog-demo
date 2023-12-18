@@ -16,7 +16,6 @@ class UserStatusController extends Controller
     }
 
     public function __invoke(Request $request){
-        $this->userService->changeStatus($request);
-        return redirect()->route('admin.users.index');
+        return  $this->userService->changeStatus($request);
     }
 }

@@ -22,16 +22,9 @@ class Create extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|unique:categories,name,' ,
+            'name' => 'required|string' ,
             'is_active' => 'required|not_in:default'
         ];
-
-        // Add unique rule only when the name is changed
-        if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $rules['name'] .= '|unique:categories,name,' . $this->category . ',slug';
-        } else {
-            $rules['name'] .= '|unique:categories,name';
-        }
 
         return $rules;
     }

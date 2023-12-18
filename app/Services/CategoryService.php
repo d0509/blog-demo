@@ -89,7 +89,7 @@ class CategoryService
             'is_active' => $updatedStatus,
         ]);
 
-        return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'Staus'])]);
+        return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'Status'])]);
     }
 
     

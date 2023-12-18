@@ -5,10 +5,10 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-gray-800">Category</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Categories</h1>
                     <a href="{{ route('admin.categories.create') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fa-solid fa-user-plus mr-2 ml-5"></i>Create Category</a>
+                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fa-solid fa-tag "
+                            style="margin-right: 5px;"></i>Create Category</a>
                 </div>
 
                 <div class="row">
