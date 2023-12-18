@@ -30,7 +30,7 @@ class PostService
                 });
             if ($isForListing == false) {
                 $data = Post::select("*")
-                ->with('category');
+                    ->with('category');
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
                         $editURL = route('admin.blogs.edit', ['blog' => $row->slug]);
@@ -57,11 +57,17 @@ class PostService
                     ->make(true);
             }
         } else {
-            if (request('search')) {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
-                return $blogs;
-            } else {
+            if (request('search') == null && request('category_id') == 'empty') {
                 $blogs = Post::whereStatus('publish')->latest()->get();
+                return $blogs;
+            } elseif (request('search') != null && request('category_id') != 'empty') {
+                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
+                return $blogs;
+            } elseif (request('search') == null && request('category_id') != 'empty') {
+                $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
+                return $blogs;
+            } elseif (!request('search') == null && request('category_id') == 'empty') {
+                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
                 return $blogs;
             }
         }
@@ -69,10 +75,8 @@ class PostService
 
     public function resource($slug)
     {
-        // dd($slug);
         $blog = Post::whereSlug($slug)->first();
-        if(!$blog)
-        {
+        if (!$blog) {
             return ['message' => "No post found"];
         }
         return $blog;
@@ -80,7 +84,6 @@ class PostService
 
     public function upsert($inputs, $slug = null)
     {
-        // dd($slug);
         $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));
