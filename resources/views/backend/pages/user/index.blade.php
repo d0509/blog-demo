@@ -80,7 +80,8 @@
                         status: status,
 
                     },
-                    success: function() {
+                    success: function(response) {
+                        toastr.success(response.message, "Success");
                         console.log('updated successfuly');
                     }
                 });
