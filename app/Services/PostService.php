@@ -24,7 +24,7 @@ class PostService
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')
+            $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
                 ->with('category')
                 ->whereHas('category', function ($q) {
                 });
@@ -41,6 +41,9 @@ class PostService
                     })
                     ->orderColumn('title', function ($query, $order) {
                         $query->orderBy('id', $order);
+                    })
+                    ->orderColumn('category_id', function ($query, $order) {
+                        $query->orderBy('name', $order);
                     })
                     ->rawColumns(['action', 'title', 'created_at'])
                     ->setRowId('id')
