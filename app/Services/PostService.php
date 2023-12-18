@@ -57,17 +57,25 @@ class PostService
                     ->make(true);
             }
         } else {
-            if (request('search') == null && request('category_id') == 'empty') {
+            if (!empty(request('category_id')) && !empty(request('search'))) {
+                if (request('search') == null && request('category_id') == 'empty') {
+                    $blogs = Post::whereStatus('publish')->latest()->get();
+                    return $blogs;
+                } elseif (request('search') != null && request('category_id') != 'empty') {
+                    $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
+                    return $blogs;
+                } elseif (request('search') == null && request('category_id') != 'empty') {
+                    $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
+                    return $blogs;
+                } elseif (!request('search') == null && request('category_id') == 'empty') {
+                    $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
+                    return $blogs;
+                } else {
+                    $blogs = Post::whereStatus('publish')->latest()->get();
+                    return $blogs;
+                }
+            } else {
                 $blogs = Post::whereStatus('publish')->latest()->get();
-                return $blogs;
-            } elseif (request('search') != null && request('category_id') != 'empty') {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
-                return $blogs;
-            } elseif (request('search') == null && request('category_id') != 'empty') {
-                $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
-                return $blogs;
-            } elseif (!request('search') == null && request('category_id') == 'empty') {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
                 return $blogs;
             }
         }
