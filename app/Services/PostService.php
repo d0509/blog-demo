@@ -29,11 +29,17 @@ class PostService
                 ->whereHas('category', function ($q) {
                 });
             if ($isForListing == false) {
+                $data = Post::select("*")
+                ->with('category');
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
                         $editURL = route('admin.blogs.edit', ['blog' => $row->slug]);
                         $showURL = route('admin.blogs.show', ['blog' => $row->slug]);
-                        $btn = '<div class="d-flex justify-content-space"><a class="text-white w-3 btn btn-danger mr-2" onclick="deletePost(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $showURL . '" class="text-white w-3 btn btn-primary delete_event mr-2"> <i class="fa-solid fa-eye"></i></a><a href="' . $editURL . '" class="text-white w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
+                        $btn = '<div class="d-flex justify-content-between">
+                        <a class="text-white w-3 btn btn-danger mr-2" onclick="deletePost(' . $row->id . ')" > <i class="fas fa-trash"></i></a>
+                        <a style="margin-left:4px;" href="' . $showURL . '" class="text-white w-3 btn btn-primary delete_event mr-2"> <i class="fa-solid fa-eye"></i></a>
+                        <a style="margin-left:4px;" href="' . $editURL . '" class="text-white w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a>
+                    </div>';
                         return $btn;
                     })
                     ->addColumn('created_at', function ($row) {
@@ -63,7 +69,12 @@ class PostService
 
     public function resource($slug)
     {
+        // dd($slug);
         $blog = Post::whereSlug($slug)->first();
+        if(!$blog)
+        {
+            return ['message' => "No post found"];
+        }
         return $blog;
     }
 
@@ -97,6 +108,7 @@ class PostService
             }
         }
     }
+
     public function destroy($id)
     {
         $post = Post::findOrFail($id);

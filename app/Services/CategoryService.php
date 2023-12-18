@@ -67,7 +67,7 @@ class CategoryService
         $category = Category::whereSlug($slug)->first();
         $category->update($inputs->except('slug'));
         $category->save();
-        session()->flash('success', 'Category Updated successfully');
+        session()->flash('success',['message' => __('entity.entityUpdated', ['entity' => 'Category'])]);
         return redirect()->route('admin.categories.index');
     }
 
@@ -77,9 +77,8 @@ class CategoryService
         if ($category) {
             $category->delete();
         }
-
-        session()->flash('success', 'Category deleted successfully');
-        return response()->json(['message' => 'Category deleted successfully']);
+        session()->flash('success', __('entity.entityDeleted', ['entity' => 'Category']));
+        return response()->json(['message' => __('entity.entityDeleted', ['entity' => 'Category'])]);
     }
 
     public function changeStatus($inputs)
@@ -90,7 +89,7 @@ class CategoryService
             'is_active' => $updatedStatus,
         ]);
 
-        return response()->json(['message' => 'Category updated successfully']);
+        return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'Staus'])]);
     }
 
     

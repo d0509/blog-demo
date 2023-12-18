@@ -44,7 +44,7 @@
             </div>
         </div>
     @else
-       <h3 class="text-center" >Admin can not access this page</h3> 
+        <h3 class="text-center">Admin can not access this page</h3>
     @endif
 
 @endsection

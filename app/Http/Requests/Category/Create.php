@@ -22,8 +22,8 @@ class Create extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string',
-            'is_active' => 'required|not_in:default',
+            'name' => 'required|string|unique:categories,name,' ,
+            'is_active' => 'required|not_in:default'
         ];
 
         // Add unique rule only when the name is changed

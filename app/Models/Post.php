@@ -21,6 +21,11 @@ class Post extends Model
         'description',
     ];
 
+    public function getCreatedAtAttribute($value)
+    {
+        // Change the date format as per your requirement
+        return \Carbon\Carbon::parse($value)->format('d-m-Y');
+    }
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -45,7 +50,8 @@ class Post extends Model
 
     public function scopeSearch($query, $keyword)
     {
-        return $query->whereTitle('like', '%' . $keyword . '%');
-        //  ->orWhere('description', 'like', '%' . $keyword . '%');
+        return $query->where('title', 'like', '%' . $keyword . '%');
     }
+
+                    
 }

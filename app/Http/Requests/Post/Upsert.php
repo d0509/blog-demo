@@ -32,7 +32,7 @@ class Upsert extends FormRequest
         if ($this->isMethod('put') || $this->isMethod('patch')) {
             $rules['banner'] = 'nullable|image';
         } else {
-            $rules['banner'] = 'image|required';
+            $rules['banner'] = 'required|image';
         }
 
         return $rules;
