@@ -20,7 +20,7 @@ class PostService
         $this->postObj = new Post();
     }
 
-    public function collection($inputs, $isForListing = false)
+    public function collection($isForListing = false)
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
@@ -75,6 +75,7 @@ class PostService
 
     public function resource($slug)
     {
+        // dd($slug);
         $blog = Post::whereSlug($slug)->first();
         if (!$blog) {
             return ['message' => "No post found"];
@@ -84,6 +85,7 @@ class PostService
 
     public function upsert($inputs, $slug = null)
     {
+        // dd($slug);
         $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));

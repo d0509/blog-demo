@@ -19,7 +19,7 @@ class HomeController extends Controller
 
     public function index(Request $request)
     {
-        $blogs = $this->postService->collection($request, true);
+        $blogs = $this->postService->collection(true);
         $categories = $this->categoryService->collection(true);
         $category_id = request('category_id');
         return view('frontend.pages.home', [
@@ -31,7 +31,7 @@ class HomeController extends Controller
 
     public function getAjaxListing($request)
     {
-        $blogs = $this->postService->collection($request, true);
+        $blogs = $this->postService->collection(true);
 
         $htmlView = view('frontend.pages.blog-list', compact('blogs'))->render();
 
