@@ -16,6 +16,7 @@ class PostController extends Controller
     }
 
     public function show(String $slug){
+        dd(123);
         $post = $this->postService->resource($slug);
         return view('frontend.pages.show-blog',[
             'post' => $post

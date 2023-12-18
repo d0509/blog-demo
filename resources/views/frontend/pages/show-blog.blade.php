@@ -3,7 +3,7 @@
 @section('content')
     <div class="container" style="overflow-x: hidden; overflow-y:auto;">
         <div class="card">
-
+            
             <h1 class="text-center">
                 {{ $post->title }}
             </h1>

@@ -36,8 +36,9 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'signUp'])->name('signUp');
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('posts/{slug}',[ControllersPostController::class,'show'])->name('posts.show');
+Route::get('{category?}/{search?}', [HomeController::class, 'index'])->name('home');
+Route::get('blogs/{slug}',[ControllersPostController::class,'show'])->name('posts.show');
+// Route::get('blogs/{categorySlug?}',[ControllersPostController::class,'index'])->name('posts.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');

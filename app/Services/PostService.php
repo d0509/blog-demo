@@ -56,17 +56,39 @@ class PostService
                     ->make(true);
             }
         } else {
-            if (request('category_id') && request('category_id') != 'empty') {
-                $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
-                return $blogs;
-            }
+            // if (request('category_id') && request('category_id') != 'empty') {
+            //     $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
+            //     return $blogs;
+            // }    
+            $query = Post::select("*")->with('category');
+
             if (request('search')) {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
+                $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
+                return $blogs;
+            } elseif (request('category')) {
+
+
+                // $blogs = $query->where()
+                $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
+                // dd($blogs);
                 return $blogs;
             } else {
-                $blogs = Post::whereStatus('publish')->latest()->get();
+                $query = Post::select("*")->with('category');
+                $blogs = Post::with('category')
+                    ->where('status', 'publish')
+                    ->whereHas('category', function ($query) {
+                        $query->where('is_active', 1);
+                    })
+                    ->latest('created_at')
+                    ->get();
+                foreach ($blogs as $blog) {
+                    if ($blog->category->is_active == 1) {
+                        //  return $blog;
+                    }
+                }
                 return $blogs;
             }
+            // if(request('category'))
         }
     }
 
@@ -104,7 +126,6 @@ class PostService
                 $imageUploader->replace($oldImage);
                 $post->syncMedia($oldImage, 'banner');
             } else {
-
                 $post->attachMedia($imageUploader->toDestination('public', 'banner')->upload(), 'banner');
             }
         }

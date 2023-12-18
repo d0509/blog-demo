@@ -101,100 +101,47 @@
         });
     </script>
 @endsection --}}
-<!DOCTYPE html>
-<html lang="en">
 
-    <!-- Basic -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Mobile Metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <!-- Site Metas -->
-    <title>Forest Time - Stylish Magazine Blog Template</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    
-    <!-- Site Icons -->
-    <link rel="shortcut icon" href="{{ asset('asssets/front-assets/images/favicon.ico')}}" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="{{ asset('asssets/front-assets/images/apple-touch-icon.png')}}">
-    
-    <!-- Design fonts -->
-    <link href="{{ asset('assets/front-assets/https://fonts.googleapis.com/css?family=Droid+Sans:400,700')}}" rel="stylesheet"> 
-
-    <!-- Bootstrap core CSS -->
-    <link href="{{ asset('assets/front-assets/css/bootstrap.css')}}" rel="stylesheet">
-
-    <!-- FontAwesome Icons core CSS -->
-    <link href="{{ asset('assets/front-assets/css/font-awesome.min.css')}}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{{ asset('assets/front-assets/style.css')}}" rel="stylesheet">
-
-    <!-- Responsive styles for this template -->
-    <link href="{{ asset('assets/front-assets/css/responsive.css')}}" rel="stylesheet">
-
-    <!-- Colors for this template -->
-    <link href="{{ asset('assets/front-assets/css/colors.css')}}" rel="stylesheet">
-
-    <!-- Version Garden CSS for this template -->
-    <link href="{{ asset('assets/front-assets/css/version/garden.css')}}" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
 <body>
 
     <div id="wrapper">
         <div class="collapse top-search" id="collapseExample">
             <div class="card card-block">
                 <div class="newsletter-widget text-center">
-                    <form action="{{ route('home') }}" method="get" class="form-inline">
+                    {{-- <form action="{{ route('home') }}" method="get" class="form-inline">
                         <input type="text" value="{{ request('search') }}" id="form1" name="search" class="form-control" placeholder="What you are looking for?">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    </form>
+                    </form> --}}
                 </div><!-- end newsletter -->
             </div>
         </div><!-- end top-search -->
 
-        <div class="topbar-section">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down">
-                        <div class="topsocial">
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
+        {{-- <div class="topbar-section"> --}}
+            {{-- <div class="container-fluid"> --}}
+                {{-- <div class="row"> --}}
+                    {{-- <div class="col-lg-4 col-md-6 col-sm-6 hidden-xs-down"> --}}
+                        {{-- <div class="topsocial"> --}}
+                            {{-- <img height="75px" src="{{asset('assets/Add_a_heading.png')}}" alt=""> --}}
+                            {{-- <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Youtube"><i class="fa fa-youtube"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i class="fa fa-pinterest"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i class="fa fa-twitter"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Flickr"><i class="fa fa-flickr"></i></a>
                             <a href="#" data-toggle="tooltip" data-placement="bottom" title="Instagram"><i class="fa fa-instagram"></i></a>
-                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google+"><i class="fa fa-google-plus"></i></a>
-                        </div><!-- end social -->
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 hidden-md-down">
-                    </div><!-- end col -->
-
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                        <div class="topsearch text-right">
-                            <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fa fa-search"></i> Search</a>
-                        </div><!-- end search -->
-                    </div><!-- end col -->
-                </div><!-- end row -->
-            </div><!-- end header-logo -->
-        </div><!-- end topbar -->
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google+"><i class="fa fa-google-plus"></i></a> --}}
+                        {{-- </div><!-- end social --> --}}
+                    {{-- </div><!-- end col --> --}}
+                    {{-- </div><!-- end col -->  --}}
+                {{-- </div><!-- end row --> --}}
+            {{-- </div><!-- end header-logo --> --}}
+        {{-- </div><!-- end topbar --> --}}
 
         <div class="header-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="logo">
-                            <a href="garden-index.html"><img src="{{ asset('assets/front-assets/images/version/garden-logo.png')}}" alt=""></a>
+                            <a href="garden-index.html"><img  src="{{asset('assets/Add_a_heading.png')}}" alt=""></a>
                         </div><!-- end logo -->
                     </div>
                 </div><!-- end row -->
@@ -211,7 +158,7 @@
                         <ul class="navbar-nav">
                             @foreach ($categories as $category)
                                 <li class="nav-item">
-                                    <a class="nav-link color-green-hover" href="#">
+                                    <a class="nav-link color-green-hover" href="{{ route('home',['category' => $category->slug])}}">
                                         {{ $category->name }}
                                     </a>
                                 </li>
@@ -306,7 +253,7 @@
                                             </span>
                                             <h4><a href="{{ route('posts.show', ['slug' => $blog->slug]) }}" title="">{{ $blog->title }}</a></h4>
                                             <p>{{ $blog->excerpt }}</p>
-                                            <small><i class="fa fa-eye"></i> {{ $blog->views }}</small>
+                                            {{-- <small><i class="fa fa-eye"></i> {{ $blog->views }}</small> --}}
                                             <small>{{ $blog->created_at }}</small>
                                             <small><a href="#" title="">{{ $blog->author }}</a></small>
                                         </div><!-- end meta -->
@@ -323,7 +270,7 @@
 
                         <hr class="invis">
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-start">
@@ -336,7 +283,7 @@
                                     </ul>
                                 </nav>
                             </div><!-- end col -->
-                        </div><!-- end row -->
+                        </div><!-- end row --> --}}
                     </div><!-- end col -->
 
                     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">

@@ -22,7 +22,7 @@ class CategoryService
             $data = Category::select('id', 'name', 'is_active', 'slug');
             return DataTables::of($data)
                 ->addColumn('action', function ($row) {
-                    $editURL = route('admin.categories.edit', ['category' => $row->slug]);
+                    $editURL = route('admin.categories.edit', ['category' => $row->id]);
                     $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteCategory(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $editURL . '" class="text-white  w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
                     return $btn;
                 })
@@ -34,7 +34,7 @@ class CategoryService
                     $condition = $status == 1 ? 'checked' : '';
                     $switch = '
                     <div class="form-check form-switch text-center " >
-                    <input class="form-check-input" type="checkbox" data-categoryId="' . $row->slug . '"  role="switch" id="flexSwitchCheckChecked" ' . $condition . '>
+                    <input class="form-check-input" type="checkbox" data-categoryId="' . $row->id . '"  role="switch" id="flexSwitchCheckChecked" ' . $condition . '>
                     <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>';
                     return $switch;
@@ -44,8 +44,9 @@ class CategoryService
                 ->addIndexColumn()
                 ->make(true);
         } else {
-            $data = Category::whereIsActive(1)->get();
+            $data = Category::select('slug','name')->where('is_active',1)->get();
             return $data;
+            // dd($data->toArray());
         }
     }
 
@@ -56,15 +57,15 @@ class CategoryService
         return redirect()->route('admin.categories.index');
     }
 
-    public function resource(string $slug)
+    public function resource(string $id)
     {
-        $category =  Category::whereSlug($slug)->first();
+        $category =  Category::findOrFail($id);
         return $category;
     }
 
-    public function update($inputs, $slug)
+    public function update($inputs, $id)
     {
-        $category = Category::whereSlug($slug)->first();
+        $category = Category::findOrFail($id);
         $category->update($inputs->except('slug'));
         $category->save();
         session()->flash('success',['message' => __('entity.entityUpdated', ['entity' => 'Category'])]);
@@ -83,7 +84,7 @@ class CategoryService
 
     public function changeStatus($inputs)
     {
-        $category = Category::whereSlug($inputs->id)->first();
+        $category = Category::whereId($inputs->id)->first();
         $updatedStatus = $category->is_active == 0 ? 1 : 0;
         $category->update([
             'is_active' => $updatedStatus,
