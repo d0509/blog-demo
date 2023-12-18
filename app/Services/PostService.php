@@ -22,12 +22,12 @@ class PostService
 
     public function collection($inputs, $isForListing = false)
     {
+
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             $data = Post::select('id', 'category_id', 'author', 'title', 'created_at', 'status', 'slug')
-            ->with('category')
-            ->whereHas('category',function($q){
-                
-            });
+                ->with('category')
+                ->whereHas('category', function ($q) {
+                });
             if ($isForListing == false) {
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
@@ -42,11 +42,11 @@ class PostService
                     ->orderColumn('title', function ($query, $order) {
                         $query->orderBy('id', $order);
                     })
-                    ->rawColumns(['action', 'title','created_at'])
+                    ->rawColumns(['action', 'title', 'created_at'])
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
-            } 
+            }
         } else {
             if (request('search')) {
                 $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();

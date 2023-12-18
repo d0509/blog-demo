@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\PostService;
+use Faker\Core\Blood;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -15,10 +16,9 @@ class HomeController extends Controller
     }
     public function index(Request $request)
     {
-
         $blogs = $this->postService->collection($request, true);
         // dd($blogs);
-        return view('frontend.pages.home',[
+        return view('frontend.pages.home', [
             'blogs' => $blogs
         ]);
     }
