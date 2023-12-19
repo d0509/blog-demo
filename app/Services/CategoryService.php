@@ -33,8 +33,8 @@ class CategoryService
                     $status  = $row->is_active;
                     $condition = $status == 1 ? 'checked' : '';
                     $switch = '
-                    <div class="form-check form-switch text-center " >
-                    <input class="form-check-input" type="checkbox" data-categoryId="' . $row->slug . '"  role="switch" id="flexSwitchCheckChecked" ' . $condition . '>
+                    <div class="form-check form-switch text-center" >
+                    <input class="form-check-input " style="cursor:pointer;" type="checkbox" data-categoryId="' . $row->id . '"  role="switch" id="flexSwitchCheckChecked" ' . $condition . '>
                     <label class="form-check-label" for="flexSwitchCheckChecked"></label>
                     </div>';
                     return $switch;
@@ -44,8 +44,9 @@ class CategoryService
                 ->addIndexColumn()
                 ->make(true);
         } else {
-            $data = Category::whereIsActive(1)->get();
+            $data = Category::select('slug', 'name', 'id')->where('is_active', 1)->get();
             return $data;
+            // dd($data->toArray());
         }
     }
 
@@ -67,7 +68,7 @@ class CategoryService
         $category = Category::whereSlug($slug)->first();
         $category->update($inputs->except('slug'));
         $category->save();
-        session()->flash('success',['message' => __('entity.entityUpdated', ['entity' => 'Category'])]);
+        session()->flash('success', ['message' => __('entity.entityUpdated', ['entity' => 'Category'])]);
         return redirect()->route('admin.categories.index');
     }
 
@@ -83,7 +84,7 @@ class CategoryService
 
     public function changeStatus($inputs)
     {
-        $category = Category::whereSlug($inputs->id)->first();
+        $category = Category::whereId($inputs->id)->first();
         $updatedStatus = $category->is_active == 0 ? 1 : 0;
         $category->update([
             'is_active' => $updatedStatus,
@@ -91,6 +92,4 @@ class CategoryService
 
         return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'Status'])]);
     }
-
-    
 }

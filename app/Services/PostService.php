@@ -22,7 +22,7 @@ class PostService
 
     public function collection($isForListing = false)
     {
-
+        
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
             //     ->with('category')
@@ -44,6 +44,7 @@ class PostService
                     </div>';
                         return $btn;
                     })
+                    
                     ->addColumn('created_at', function ($row) {
                         return Carbon::parse($row->created_at)->format(config('site.date_format'));
                     })
@@ -59,45 +60,38 @@ class PostService
                     ->make(true);
             }
         } else {
-            // dd(request('search'));
-            if (request('category_id') && request('category_id') != 'empty') {
-                $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
-                return $blogs;
-            }
+            // if (request('category_id') && request('category_id') != 'empty') {
+            //     $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
+            //     return $blogs;
+            // }    
+            $query = Post::select("*")->with('category');
             if (request('search')) {
-                $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
+                $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
+                return $blogs;
+            } elseif (request('category')) {
+
+
+                // $blogs = $query->where()
+                $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
+                // dd($blogs);
                 return $blogs;
             } else {
-                $blogs = Post::whereStatus('publish')->latest()->get();
+                $query = Post::select("*")->with('category');
+                $blogs = Post::with('category')
+                    ->where('status', 'publish')
+                    ->whereHas('category', function ($query) {
+                        $query->where('is_active', 1);
+                    })
+                    ->latest('created_at')
+                    ->get();
                 return $blogs;
             }
-            //     if (!empty(request('category_id')) && !empty(request('search'))) {
-            //         if (request('search') == null && request('category_id') == 'empty') {
-            //             $blogs = Post::whereStatus('publish')->latest()->get();
-            //             return $blogs;
-            //         } elseif (request('search') != null && request('category_id') != 'empty') {
-            //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
-            //             return $blogs;
-            //         } elseif (request('search') == null && request('category_id') != 'empty') {
-            //             $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
-            //             return $blogs;
-            //         } elseif (!request('search') == null && request('category_id') == 'empty') {
-            //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
-            //             return $blogs;
-            //         } else {
-            //             $blogs = Post::whereStatus('publish')->latest()->get();
-            //             return $blogs;
-            //         }
-            //     } else {
-            //         $blogs = Post::whereStatus('publish')->latest()->get();
-            //         return $blogs;
-            //     }
+            // if(request('category'))
         }
     }
 
     public function resource($slug)
     {
-        // dd($slug);
         $blog = Post::whereSlug($slug)->first();
         if (!$blog) {
             return ['message' => "No post found"];
@@ -130,7 +124,6 @@ class PostService
                 $imageUploader->replace($oldImage);
                 $post->syncMedia($oldImage, 'banner');
             } else {
-
                 $post->attachMedia($imageUploader->toDestination('public', 'banner')->upload(), 'banner');
             }
         }

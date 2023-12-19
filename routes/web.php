@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\admin\CategoryStatusController;
+use App\Http\Controllers\Admin\CategoryStatusController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserStatusController;
@@ -22,23 +22,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('home', function () {
-    return view('backend.pages.login');
-});
-
-Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthController::class, 'login'])->name('login');
-    Route::post('login', [AuthController::class, 'SignIn'])->name('signIn');
-    Route::get('register', [AuthController::class, 'register'])->name('register');
-    Route::post('register', [AuthController::class, 'signUp'])->name('signUp');
-});
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('posts/{slug}',[ControllersPostController::class,'show'])->name('posts.show');
-
 Route::middleware('auth')->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -47,8 +30,21 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
         Route::post('change-status', UserStatusController::class)->name('change-status');
         Route::resource('categories', AdminCategoryController::class);
-        Route::resource('blogs',PostController::class);
-        Route::post('categories/change-status',CategoryStatusController::class)->name('categories.status');
+        Route::resource('blogs', AdminPostController::class);
+        Route::post('categories/change-status', CategoryStatusController::class)->name('categories.status');
     });
-
 });
+
+Route::get('home', function () {
+    return view('backend.pages.login');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::get('admin/login', [AuthController::class, 'login'])->name('login');
+    Route::post('login', [AuthController::class, 'signIn'])->name('signIn');
+    Route::get('register', [AuthController::class, 'register'])->name('register');
+    Route::post('register', [AuthController::class, 'signUp'])->name('sign-up');
+});
+
+Route::get('blogs/{slug}', [ControllersPostController::class, 'show'])->name('posts.show');
+Route::get('{category?}/{search?}', [HomeController::class, 'index'])->name('home');
