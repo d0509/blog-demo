@@ -58,8 +58,8 @@
                         <div class="col-sm-10 ">
                             <textarea {{ old('description') }} name="description" id="summernote" class="form-control " placeholder="Description">
                             @if (isset($blog))
-{{ old('description', $blog->description) }}@else{{ old('description') }}
-@endif
+                            {{ old('description', $blog->description) }}@else{{ old('description') }}
+                            @endif
                             </textarea>
                             @error('description')
                                 <span class="text-danger">
@@ -84,8 +84,7 @@
                         <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Banner</label>
                             <div class="col-sm-10">
-                                <input type="file" accept="image/png, image/jpeg, image/jpg" id="banner"
-                                    name="banner" class="form-control">
+                                <input type="file"  accept="image/png, image/jpeg, image/jpg" id="banner" id="banner" name="banner" class="form-control">
                                 @error('author')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror

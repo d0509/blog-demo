@@ -24,13 +24,15 @@ class PostService
     {
         
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
-                ->with('category')
-                ->whereHas('category', function ($q) {
-                });
+            // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
+            //     ->with('category')
+            //     ->whereHas('category', function ($q) {
+            //     });
             if ($isForListing == false) {
                 $data = Post::select("*")
-                    ->with('category');
+                    ->with('category')->whereHas('category',function($q){
+                        $q->where('deleted_at',null);
+                    });
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
                         $editURL = route('admin.blogs.edit', ['blog' => $row->slug]);
@@ -42,6 +44,7 @@ class PostService
                     </div>';
                         return $btn;
                     })
+                    
                     ->addColumn('created_at', function ($row) {
                         return Carbon::parse($row->created_at)->format(config('site.date_format'));
                     })

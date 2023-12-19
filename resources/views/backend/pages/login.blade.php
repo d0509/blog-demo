@@ -37,8 +37,9 @@
                                                 @enderror
                                             </div>
                                             
-                                            <button type="submit" class="btn btn-primary btn-block" >Login</button>
-                                            
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <button type="submit" class="btn btn-primary btn-block" >Login</button>
+                                            </div>
                                         </form>
                                     </div>
                                     <div class="card-footer text-center py-3">
