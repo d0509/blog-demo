@@ -175,21 +175,7 @@
                 </nav>
             </div><!-- end container -->
         </header><!-- end header -->
-        <div class="page-title wb">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                        <h2><i class="fa fa-leaf bg-green"></i> Blog</h2>
-                    </div><!-- end col -->
-                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
-                        <ol class="breadcrumb">
-                            {{-- {{ dd( URL::current())}} --}}
-                            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
-                        </ol>
-                    </div><!-- end col -->                    
-                </div><!-- end row -->
-            </div><!-- end container -->
-        </div>
+       
         {{-- <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">

@@ -49,7 +49,7 @@
         </div><!-- end container -->
     </header><!-- end header -->
 
-    <div class="page-title wb">
+    {{-- <div class="page-title wb">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -63,7 +63,7 @@
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
-    </div><!-- end page-title -->
+    </div><!-- end page-title --> --}}
 
     <section class="section wb">
         <div class="container">
