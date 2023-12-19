@@ -41,7 +41,7 @@
                         <div class="col-sm-10 ">
                             <select class="form-select changeUserStatus" aria-label="Default select example"
                                 name="category_id">
-                                <option value="default"> Please select a Category for Blog </option>
+                                <option value="default"> Please select a Category </option>
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
                                         @if (isset($blog)) {{ $category->id == $blog->category->id ? 'selected' : '' }} @endif>

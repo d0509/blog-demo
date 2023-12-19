@@ -77,7 +77,7 @@ class CategoryService
         if ($category) {
             $category->delete();
         }
-        session()->flash('success', __('entity.entityDeleted', ['entity' => 'Category']));
+        // session()->flash('success', __('entity.entityDeleted', ['entity' => 'Category']));
         return response()->json(['message' => __('entity.entityDeleted', ['entity' => 'Category'])]);
     }
 
