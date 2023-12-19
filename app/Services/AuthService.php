@@ -56,7 +56,5 @@ class AuthService
         } else {
             session()->flash('danger', 'User with such credential does not exist!');
         }
-
-        
     }
 }
