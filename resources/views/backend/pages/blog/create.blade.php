@@ -58,8 +58,8 @@
                         <div class="col-sm-10 ">
                             <textarea {{ old('description') }} name="description" id="summernote" class="form-control " placeholder="Description">
                             @if (isset($blog))
-{{ old('description', $blog->description) }}@else{{ old('description') }}
-@endif
+                            {{ old('description', $blog->description) }}@else{{ old('description') }}
+                            @endif
                             </textarea>
                             @error('description')
                                 <span class="text-danger">

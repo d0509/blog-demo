@@ -39,6 +39,8 @@
 @section('contentfooter')
     <script>
         $(document).ready(function() {
+            $("#dataTable").removeAttr('style');
+
             var table = $('#dataTable').DataTable({
 
                 processing: true,
@@ -86,6 +88,7 @@
                     },
                 ],
             });
+
 
             $(document).on('click', '#flexSwitchCheckChecked', function(e) {
                 e.preventDefault();
