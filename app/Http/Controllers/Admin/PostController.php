@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Services\PostService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\Upsert;
-use App\Models\Post;
 use App\Services\CategoryService;
 
 class PostController extends Controller
@@ -34,12 +33,9 @@ class PostController extends Controller
         $category = $this->categoryService->collection(true);
         return view('backend.pages.blog.create',[
             'categories' => $category
-        ]);
+            ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Upsert $request)
     {
        $this->postService->upsert($request);
@@ -54,9 +50,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $slug)
     {
         $category = $this->categoryService->collection(true);
@@ -77,9 +70,6 @@ class PostController extends Controller
     
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($post)
     {
         return $this->postService->destroy($post);

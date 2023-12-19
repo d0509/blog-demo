@@ -11,5 +11,5 @@ return[
         'admin' => 'admin' ,
         'user' => 'user'
     ],
-    'date_format' => 'd-m-Y',
+    'date_format' => 'd F,Y',
 ];

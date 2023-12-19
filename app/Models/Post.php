@@ -48,6 +48,13 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function scopeInCategory($query, $categorySlug)
+    {
+        return $query->whereHas('category', function ($subquery) use ($categorySlug) {
+            $subquery->where('slug', $categorySlug);
+        });
+    }
+
     public function scopeSearch($query, $keyword)
     {
         return $query->where('title', 'like', '%' . $keyword . '%');

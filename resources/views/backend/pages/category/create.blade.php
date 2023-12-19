@@ -15,7 +15,6 @@
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Category</h1>
                     @endif
                 </div>
-
                 @if (isset($category))
                     <form action="{{ route('admin.categories.update', ['category' => $category->slug]) }}" method="post">
                         @csrf

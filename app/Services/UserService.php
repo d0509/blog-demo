@@ -30,8 +30,9 @@ class UserService
             $user->update([
                 'status' => $inputs->status
             ]);
+
+            return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'User'])]);
         }
 
-        return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'User'])]);
     }
 }

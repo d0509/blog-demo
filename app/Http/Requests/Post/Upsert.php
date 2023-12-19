@@ -21,6 +21,7 @@ class Upsert extends FormRequest
      */
     public function rules(): array
     {
+        // dd(request());
 
         $rules = [
             'title' => 'required|min:3',
@@ -37,6 +38,5 @@ class Upsert extends FormRequest
         }
 
         return $rules;
-         
     }
 }

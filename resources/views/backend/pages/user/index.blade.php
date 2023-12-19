@@ -5,7 +5,8 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Users</h1>
-                <div class="row">
+                <div class="row" style="margin-top: 70px;padding: 10px;border: 0 solid rgba(0,0,0,.125);
+                border-radius: .25rem;background-color: #fff;box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);margin-bottom: 1rem;">
                     <table class="table">
                         <thead>
                             <tr>
