@@ -16,7 +16,7 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-white text-uppercase mb-1">
                                             Total Users</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> 15 </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> {{$usersCount}} </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa-solid fa-users fa-xl"></i>
@@ -36,7 +36,7 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-white text-uppercase mb-1">
                                             Categories</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> 15 </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> {{$categoryCount}} </div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa-solid fa-tag"></i>
@@ -56,7 +56,7 @@
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-white text-uppercase mb-1">
                                             Blogs </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"> 15 </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$postCount}}</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa-solid fa-book"></i>
