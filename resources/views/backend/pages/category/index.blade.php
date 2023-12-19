@@ -5,14 +5,16 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-gray-800">Category</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Categories</h1>
                     <a href="{{ route('admin.categories.create') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fa-solid fa-user-plus mr-2 ml-5"></i>Create Category</a>
+                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fa-solid fa-tag"
+                            style="margin-right: 5px"></i>Create Category</a>
                 </div>
 
-                <div class="row">
-                    <table class="table" id="dataTable">
+                <div class="row"
+                    style="margin-top: 70px;padding: 10px;border: 0 solid rgba(0,0,0,.125);
+                border-radius: .25rem;background-color: #fff;box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);margin-bottom: 1rem;">
+                    <table class="table" id="dataTable" style="width: 100%">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -36,8 +38,9 @@
     <script>
         $(document).ready(function() {
             var table = $('#dataTable').DataTable({
-
+                responsive: true,
                 processing: true,
+                bAutoWidth: false,
                 serverSide: true,
                 order: [
                     [1, 'desc']
@@ -75,7 +78,10 @@
                         searchable: false
                     },
                 ],
+
             });
+
+
 
             $(document).on('click', '#flexSwitchCheckChecked', function(e) {
                 e.preventDefault();

@@ -24,13 +24,15 @@ class PostService
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
-                ->with('category')
-                ->whereHas('category', function ($q) {
-                });
+            // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
+            //     ->with('category')
+            //     ->whereHas('category', function ($q) {
+            //     });
             if ($isForListing == false) {
                 $data = Post::select("*")
-                    ->with('category');
+                    ->with('category')->whereHas('category',function($q){
+                        $q->where('deleted_at',null);
+                    });
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
                         $editURL = route('admin.blogs.edit', ['blog' => $row->slug]);
@@ -58,38 +60,38 @@ class PostService
             }
         } else {
             // dd(request('search'));
-            if(request('category_id') && request('category_id') != 'empty'){
+            if (request('category_id') && request('category_id') != 'empty') {
                 $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
                 return $blogs;
             }
-            if(request('search')){
+            if (request('search')) {
                 $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
                 return $blogs;
             } else {
                 $blogs = Post::whereStatus('publish')->latest()->get();
                 return $blogs;
             }
-        //     if (!empty(request('category_id')) && !empty(request('search'))) {
-        //         if (request('search') == null && request('category_id') == 'empty') {
-        //             $blogs = Post::whereStatus('publish')->latest()->get();
-        //             return $blogs;
-        //         } elseif (request('search') != null && request('category_id') != 'empty') {
-        //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
-        //             return $blogs;
-        //         } elseif (request('search') == null && request('category_id') != 'empty') {
-        //             $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
-        //             return $blogs;
-        //         } elseif (!request('search') == null && request('category_id') == 'empty') {
-        //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
-        //             return $blogs;
-        //         } else {
-        //             $blogs = Post::whereStatus('publish')->latest()->get();
-        //             return $blogs;
-        //         }
-        //     } else {
-        //         $blogs = Post::whereStatus('publish')->latest()->get();
-        //         return $blogs;
-        //     }
+            //     if (!empty(request('category_id')) && !empty(request('search'))) {
+            //         if (request('search') == null && request('category_id') == 'empty') {
+            //             $blogs = Post::whereStatus('publish')->latest()->get();
+            //             return $blogs;
+            //         } elseif (request('search') != null && request('category_id') != 'empty') {
+            //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->where('category_id', request('category_id'))->whereStatus('publish')->latest()->get();
+            //             return $blogs;
+            //         } elseif (request('search') == null && request('category_id') != 'empty') {
+            //             $blogs = Post::whereCategoryId(request('category_id'))->whereStatus('publish')->latest()->get();
+            //             return $blogs;
+            //         } elseif (!request('search') == null && request('category_id') == 'empty') {
+            //             $blogs = Post::where('title', 'like', '%' . request('search') . '%')->whereStatus('publish')->latest()->get();
+            //             return $blogs;
+            //         } else {
+            //             $blogs = Post::whereStatus('publish')->latest()->get();
+            //             return $blogs;
+            //         }
+            //     } else {
+            //         $blogs = Post::whereStatus('publish')->latest()->get();
+            //         return $blogs;
+            //     }
         }
     }
 
