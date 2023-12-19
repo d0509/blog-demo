@@ -21,6 +21,7 @@ class Upsert extends FormRequest
      */
     public function rules(): array
     {
+
         $rules = [
             'title' => 'required|min:3',
             'category_id' => 'required|exists:categories,id',

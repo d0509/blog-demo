@@ -16,8 +16,11 @@ class UserService
 
     public function collection()
     {
-        $user = User::latest()->get();
-        return $user;
+        $users = User::get();
+        $userscount = $users->reject(function ($user, $key) {
+            return $user->hasRole('admin');
+        });
+        return $userscount;
     }
 
     public function changeStatus($inputs)

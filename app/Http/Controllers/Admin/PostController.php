@@ -70,7 +70,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Upsert $request, string $id)
     {
         $this->postService->upsert($request,$id);
         return redirect()->route('admin.blogs.index');
