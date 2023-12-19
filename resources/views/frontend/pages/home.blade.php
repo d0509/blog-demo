@@ -136,12 +136,13 @@
             {{-- </div><!-- end header-logo --> --}}
         {{-- </div><!-- end topbar --> --}}
 
-        <div class="header-section">
+        <div class="header-section page-title wb">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="logo">
-                            <a href="garden-index.html"><img  src="{{asset('assets/Add_a_heading.png')}}" alt=""></a>
+                        <div class="logo d-flex justify-content-center align-items-center">
+                            <a href="{{route('home')}}"><h2><i class="fa fa-leaf bg-green"></i> Bloggify</h2>
+                            </a>
                         </div><!-- end logo -->
                     </div>
                 </div><!-- end row -->
@@ -158,7 +159,13 @@
                         <ul class="navbar-nav">
                             @foreach ($categories as $category)
                                 <li class="nav-item">
-                                    <a class="nav-link color-green-hover" href="{{ route('home',['category' => $category->slug])}}">
+                                    <a 
+                                    @if( Request::segment(1) ==  $category->slug)
+                                    class="nav-link" style="color:green;"
+                                    @else
+                                    class="nav-link  color-green-hover"
+                                    @endif
+                                    href="{{ route('home',['category' => $category->slug])}}">
                                         {{ $category->name }}
                                     </a>
                                 </li>
@@ -168,7 +175,21 @@
                 </nav>
             </div><!-- end container -->
         </header><!-- end header -->
-
+        <div class="page-title wb">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <h2><i class="fa fa-leaf bg-green"></i> Blog</h2>
+                    </div><!-- end col -->
+                    <div class="col-lg-4 col-md-4 col-sm-12 hidden-xs-down hidden-sm-down">
+                        <ol class="breadcrumb">
+                            {{-- {{ dd( URL::current())}} --}}
+                            <li class="breadcrumb-item"><a href="{{ route('home')}}">Home</a></li>
+                        </ol>
+                    </div><!-- end col -->                    
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </div>
         {{-- <section class="section first-section">
             <div class="container-fluid">
                 <div class="masonry-blog clearfix">
@@ -229,13 +250,13 @@
                     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                         <div class="page-wrapper">
                             <div class="blog-list clearfix">
-                                <div class="row" id="searchResults">
+                                <div class="row justify-content-center" id="searchResults" >
                                     @forelse ($blogs as $blog)
                                         <div class="col-md-4">
                                             <div class="post-media">
                                                 <a href="{{ route('posts.show', ['slug' => $blog->slug]) }}" title="">
                                                     @forelse ($blog->media as $item)
-                                                        <img src="{{ asset('storage/banner/' . $item['filename'] . '.' . $item['extension']) }}"
+                                                    <img src="{{ asset('storage/banner/' . $item['filename'] . '.' . $item['extension']) }}"
                                                              alt="" class="img-fluid">
                                                     @empty
                                                         <p class="fs-3 text-center">Given Blog doesn't have any image</p>
@@ -260,7 +281,8 @@
                                 
                                         <hr class="invis">
                                     @empty
-                                        <p class="fs-3 text-center"> No blogs found </p>
+
+                                        <h1 class="fs-3"> No blogs found </h1>
                                     @endforelse
                                 </div>
 
@@ -292,7 +314,7 @@
                                 <h2 class="widget-title">Search</h2>
                                 <form  action="{{ route('home') }}" method="get" class="form-inline search-form">
                                     <div class="form-group">
-                                        <input type="text" value="{{ request('search') }}" id="form1" name="search" class="form-control" placeholder="Search on the site">
+                                        <input type="text" value="{{ request('search') }}" id="form1" name="search" class="form-control" placeholder="Search Blog Title">
                                     </div>
                                     <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                 </form>

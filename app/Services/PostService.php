@@ -22,6 +22,7 @@ class PostService
 
     public function collection($isForListing = false)
     {
+        
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
                 ->with('category')
@@ -61,7 +62,6 @@ class PostService
             //     return $blogs;
             // }    
             $query = Post::select("*")->with('category');
-
             if (request('search')) {
                 $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
                 return $blogs;
@@ -81,11 +81,6 @@ class PostService
                     })
                     ->latest('created_at')
                     ->get();
-                foreach ($blogs as $blog) {
-                    if ($blog->category->is_active == 1) {
-                        //  return $blog;
-                    }
-                }
                 return $blogs;
             }
             // if(request('category'))
