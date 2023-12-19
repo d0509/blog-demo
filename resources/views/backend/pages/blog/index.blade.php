@@ -5,10 +5,11 @@
         <main>
             <div class="container-fluid px-4">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-gray-800">Blog</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Blogs</h1>
                     <a href="{{ route('admin.blogs.create') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                            class="fa-solid fa-user-plus mr-2 ml-5"></i>Create Blog</a>
+                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        <i class="fa-solid fa-book mr-2 ml-5" style="margin-right: 5px;"></i>Create Blog
+                    </a>
                 </div>
 
                 <div class="row">
@@ -116,7 +117,7 @@
             var token = "{{ csrf_token() }}";
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You want to delete this category?",
+                text: "You want to delete this blog?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

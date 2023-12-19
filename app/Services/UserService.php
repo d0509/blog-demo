@@ -28,5 +28,7 @@ class UserService
                 'status' => $inputs->status
             ]);
         }
+
+        return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'User'])]);
     }
 }
