@@ -22,7 +22,7 @@ class PostService
 
     public function collection($isForListing = false)
     {
-        
+
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
             //     ->with('category')
@@ -30,8 +30,8 @@ class PostService
             //     });
             if ($isForListing == false) {
                 $data = Post::select("*")
-                    ->with('category')->whereHas('category',function($q){
-                        $q->where('deleted_at',null);
+                    ->with('category')->whereHas('category', function ($q) {
+                        $q->where('deleted_at', null);
                     });
                 return DataTables::of($data)
                     ->addColumn('action', function ($row) {
@@ -44,7 +44,7 @@ class PostService
                     </div>';
                         return $btn;
                     })
-                    
+
                     ->addColumn('created_at', function ($row) {
                         return Carbon::parse($row->created_at)->format(config('site.date_format'));
                     })
@@ -58,6 +58,29 @@ class PostService
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
+            } else {
+                $query = Post::select("*")->with('category');
+                if (request('search')) {
+                    $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
+                    return $blogs;
+                } elseif (request('category')) {
+
+
+                    // $blogs = $query->where()
+                    $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
+                    // dd($blogs);
+                    return $blogs;
+                } else {
+                    $query = Post::select("*")->with('category');
+                    $blogs = Post::with('category')
+                        ->where('status', 'publish')
+                        ->whereHas('category', function ($query) {
+                            $query->where('is_active', 1);
+                        })
+                        ->latest('created_at')
+                        ->get();
+                    return $blogs;
+                }
             }
         } else {
             // if (request('category_id') && request('category_id') != 'empty') {
