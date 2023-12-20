@@ -6,6 +6,10 @@
     <meta name="author" content="" />
     @yield('meta')
     <title> @yield('title') </title>
+        <!-- Site Icons -->
+    <link rel="shortcut icon" href="{{ asset('assets/front-assets/images/favicon.ico') }}" type="image/x-icon" />
+
+    {{-- <link rel="apple-touch-icon" href="{{ asset('assets/front-assets/images/apple-touch-icon.png') }}"> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
