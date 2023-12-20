@@ -73,7 +73,7 @@
                     {
                         data: 'category.name',
                         name: 'category.name',
-                        orderable: true,
+                        orderable: false,
                     },
                     {
                         data: 'status',
