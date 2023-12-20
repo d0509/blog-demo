@@ -17,9 +17,6 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <!-- Site Icons -->
-        <link rel="shortcut icon" href="{{ asset('assets/front-assets/images/favicon.ico') }}" type="image/x-icon" />
-        <link rel="apple-touch-icon" href="{{ asset('assets/front-assets/images/apple-touch-icon.png') }}">
 
         <!-- Design fonts -->
         <link href="{{ asset('assets/front-assets/https://fonts.googleapis.com/css?family=Droid+Sans:400,700') }}"

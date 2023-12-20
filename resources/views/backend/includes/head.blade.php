@@ -5,7 +5,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     @yield('meta')
-
+    
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/leaf-icon-png-7056.png') }}">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
