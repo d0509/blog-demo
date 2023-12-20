@@ -14,12 +14,13 @@ class UserController extends Controller
         $this->userService = new UserService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-       $data = $this->userService->collection(); 
-       return view('backend.pages.user.index',[
-        'users' => $data
-       ]);
+        if ($request->ajax()) {
+            $data = $this->userService->collection();
+            return $data;
+        }
+       return view('backend.pages.user.index');
     }
 
     public function create()
