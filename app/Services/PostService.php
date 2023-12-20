@@ -24,12 +24,8 @@ class PostService
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
-            //     ->with('category')
-            //     ->whereHas('category', function ($q) {
-            //     });
             if ($isForListing == false) {
-                $data = Post::select("*")
+                $data = Post::select('id', 'category_id', 'author', 'title', 'description', 'status', 'slug', 'created_at')
                     ->with('category')->whereHas('category', function ($q) {
                         $q->where('deleted_at', null);
                     });
@@ -157,8 +153,12 @@ class PostService
         $post = Post::findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
+
+            if ($postBannerImage) {
+                $postBannerImage->delete();
+            }
+            
             $post->delete();
-            $postBannerImage->delete();
         }
         return response()->json(['message' => 'Category deleted successfully']);
     }
