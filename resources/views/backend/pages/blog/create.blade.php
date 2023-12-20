@@ -31,7 +31,7 @@
                 <div class="form-group row mt-5">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
-                        <input type="text" id="title" name="title" class="form-control" placeholder="Enter title"
+                        <input type="text" id="title" name="title" class="form-control" placeholder="Please enter title"
                             @if (isset($blog)) value="{{ old('title', $blog->title) }}">
                                     @else
                                     value="{{ old('title') }}"> @endif
