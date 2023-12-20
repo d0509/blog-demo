@@ -19,12 +19,26 @@ class PostController extends Controller
     }
 
     public function show(Request $request){
+
+        $shareComponent = \Share::page(
+            'https://www.positronx.io/create-autocomplete-search-in-laravel-with-typeahead-js/',
+            
+        )
+        ->facebook()
+        ->twitter()
+        ->linkedin()
+        ->telegram()
+        ->whatsapp()        
+        ->reddit();
+        
+
         $post = $this->postService->resource(request('slug'));
         $categories = $this->categoryService->collection(true);
         // dd($categories);
         return view('frontend.pages.show-blog',[
             'post' => $post,
             'categories' => $categories,
+            'shareComponent' => $shareComponent,
         ]);
     }
 }
