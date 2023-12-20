@@ -132,7 +132,7 @@ class PostService
         $message = $slug ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
 
         $this->handleImageUpload($inputs, $post);
-        session()->flash('success', $message);
+        toastr()->closeButton()->addSuccess($message);
         return $post;
     }
 

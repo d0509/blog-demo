@@ -1,4 +1,8 @@
  @extends('frontend.master.layout')
+ @section('contentHeader')
+ <style>
+ </style>
+ @endsection
 @section('title', 'Home Page')
 {{-- @section('content')
     @if (Auth::user()->hasRole(config('site.roles.user')))
@@ -263,11 +267,11 @@
                                             {{-- <small><i class="fa fa-eye"></i> {{ $blog->views }}</small> --}}
                                             <small>{{ $blog->created_at }}</small>
                                             <small><a href="#" title="">{{ $blog->author }}</a></small>
+                                            
                                         </div><!-- end meta -->
                                 
                                         <hr class="invis">
-                                    @empty
-
+                                    @empty        
                                         <h1 class="fs-3"> No blogs found </h1>
                                     @endforelse
                                 </div>

@@ -27,7 +27,7 @@ class Upsert extends FormRequest
             'title' => 'required|min:3',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required',
-            'author' => 'required|string|min:3',
+            'author' => 'required|string|min:3|regex:/([A-Za-z])+/',
             'status' => 'not_in:default|required',
         ];
 
@@ -36,7 +36,12 @@ class Upsert extends FormRequest
         } else {
             $rules['banner'] = 'required|image';
         }
-
         return $rules;
+    }
+    public function messages()
+    {
+        return [
+            'author.regex' => "Only letters and whitespaces are allowed."
+        ];
     }
 }

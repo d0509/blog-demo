@@ -14,7 +14,7 @@
                     @else
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Category</h1>
                     @endif
-                </div>
+                    <a class="btn btn-primary float-right" href="{{ route('admin.categories.index')}}">Back</a>                </div>
                 @if (isset($category))
                     <form action="{{ route('admin.categories.update', ['category' => $category->slug]) }}" method="post">
                         @csrf

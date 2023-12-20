@@ -22,10 +22,17 @@ class Create extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string' ,
+            'name' => 'required|string|regex:/([A-Za-z])+/' ,
             'is_active' => 'required|not_in:default'
         ];
 
         return $rules;
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => "Category field is required.",
+            'name.regex' => "Only letters and whitespaces are allowed."
+        ];
     }
 }

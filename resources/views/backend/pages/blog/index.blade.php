@@ -142,10 +142,8 @@
 
                         },
                         success: function(response) {
-                            let msg = response.message;
-                            if (msg) {
-                                Swal.fire('Success!', msg, 'success');
-                            }
+                                toastr.success(response.message, "Success");
+                            
                             $('#dataTable').DataTable().ajax.reload();
                         }
                     });

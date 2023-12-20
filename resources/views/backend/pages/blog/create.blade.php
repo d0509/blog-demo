@@ -14,6 +14,7 @@
                     @else
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Blog</h1>
                     @endif
+                    <a class="btn btn-primary float-right" href="{{ route('admin.blogs.index')}}">Back</a>
                 </div>
                 @if (isset($blog))
                     <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
@@ -85,7 +86,7 @@
                             <label for="staticEmail" class="col-sm-2 col-form-label">Banner</label>
                             <div class="col-sm-10">
                                 <input type="file"  accept="image/png, image/jpeg, image/jpg" id="banner" id="banner" name="banner" class="form-control">
-                                @error('author')
+                                @error('banner')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror
                             </div>
