@@ -41,7 +41,9 @@ class Upsert extends FormRequest
     public function messages()
     {
         return [
-            'author.regex' => "Only letters and whitespaces are allowed."
+            'author.regex' => "Only letters and whitespaces are allowed.",
+            'category_id.exists'=> "Please select a category.",
+            'status' => 'Please select a status.'
         ];
     }
 }
