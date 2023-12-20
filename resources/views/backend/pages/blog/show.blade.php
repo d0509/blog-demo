@@ -1,5 +1,7 @@
 @extends('backend.master.layout')
-@section('title', $blog->title)
+@section('contentHeader')
+        <title> {{ env('APP_NAME') }} | {{ $blog->title }} </title>
+@endsection
 @section('content')
     <div class="container-fluid">
         <div class="col-12 grid-margin stretch-card">
