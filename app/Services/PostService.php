@@ -60,11 +60,7 @@ class PostService
                     $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
                     return $blogs;
                 } elseif (request('category')) {
-
-
-                    // $blogs = $query->where()
                     $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
-                    // dd($blogs);
                     return $blogs;
                 } else {
                     $query = Post::select("*")->with('category');
@@ -113,7 +109,7 @@ class PostService
     {
         $blog = Post::whereSlug($slug)->first();
         if (!$blog) {
-            return ['message' => "No post found"];
+            return ['message' => "No Blogs found"];
         }
         return $blog;
     }
@@ -125,7 +121,7 @@ class PostService
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
-        $message = $slug ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
+        $message = $slug ? __('entity.entityUpdated', ['entity' => 'Blog']) : __('entity.entityCreated', ['entity' => 'Blog']);
 
         $this->handleImageUpload($inputs, $post);
         toastr()->closeButton()->addSuccess($message);
@@ -160,6 +156,6 @@ class PostService
             
             $post->delete();
         }
-        return response()->json(['message' => 'Category deleted successfully']);
+        return response()->json(['message' => 'Blog deleted successfully']);
     }
 }
