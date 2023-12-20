@@ -56,7 +56,7 @@
                              <div class="blog-list clearfix">
                                  <div class="row justify-content-center" id="searchResults">
                                      @forelse ($blogs as $blog)
-                                         <div class="col-md-4">
+                                         <div class="col-md-4 mt-2">
                                              <div class="post-media">
                                                  <a href="{{ route('posts.show', ['slug' => $blog->slug]) }}"
                                                      title="">
@@ -126,13 +126,6 @@
  @endsection
  @section('contentfooter')
      <script>
-        //  window.addEventListener('load', function () {
-        //      // This code ensures that the loader stays visible until the entire page is loaded.
-        //      var loaderContainer = document.querySelector('.loader-container');
-        //      if (loaderContainer) {
-        //          loaderContainer.style.display = 'none';
-        //      }
-        //  });
          $(document).ready(function() {
              // This code ensures that the loader stays visible until the entire page is loaded.
              var loaderContainer = $('.loader-container');

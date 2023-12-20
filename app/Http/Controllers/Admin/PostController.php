@@ -22,8 +22,8 @@ class PostController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $companies =  $this->postService->collection();
-            return $companies;
+            $posts =  $this->postService->collection();
+            return $posts;
         }
         return view('backend.pages.blog.index');
     }

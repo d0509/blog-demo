@@ -24,8 +24,9 @@ class PostService
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
+
             if ($isForListing == false) {
-                $data = Post::select('id', 'category_id', 'author', 'title', 'description', 'status', 'slug', 'created_at')
+                $data = Post::select("*")
                     ->with('category')->whereHas('category', function ($q) {
                         $q->where('deleted_at', null);
                     });
@@ -50,7 +51,7 @@ class PostService
                     ->orderColumn('category_id', function ($query, $order) {
                         $query->orderBy('name', $order);
                     })
-                    ->rawColumns(['action', 'title', 'created_at'])
+                    ->rawColumns(['action', 'title', 'created_at','category_id'])
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
@@ -60,7 +61,9 @@ class PostService
                     $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
                     return $blogs;
                 } elseif (request('category')) {
+
                     $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
+                    // dd($blogs);
                     return $blogs;
                 } else {
                     $query = Post::select("*")->with('category');
@@ -149,12 +152,8 @@ class PostService
         $post = Post::findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
-
-            if ($postBannerImage) {
-                $postBannerImage->delete();
-            }
-            
             $post->delete();
+            $postBannerImage->delete();
         }
         return response()->json(['message' => 'Blog deleted successfully']);
     }

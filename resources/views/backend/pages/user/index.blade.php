@@ -7,9 +7,10 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Users</h1>
-                <div class="row" style="margin-top: 70px;padding: 10px;border: 0 solid rgba(0,0,0,.125);
+                <div class="row"
+                    style="margin-top: 70px;padding: 10px;border: 0 solid rgba(0,0,0,.125);
                 border-radius: .25rem;background-color: #fff;box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);margin-bottom: 1rem;">
-                    <table class="table">
+                    <table class="table" id="dataTable">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -21,35 +22,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($users as $user)
-                                <tr>
-                                    <th scope="row"> {{ ++$loop->index }} </th>
-                                    <td> {{ $user->first_name }} </td>
-                                    <td> {{ $user->last_name }} </td>
-                                    <td> {{ $user->email }} </td>
-                                    <td> {{ $user->mobile_no }} </td>
-                                    <td>
-                                        <select class="form-select changeUserStatus" data-userId={{ $user->id }}
-                                            aria-label="Default select example" name="status">
 
-                                            <option value="pending"
-                                                {{ $user->status == config('site.user_status.pending') ? 'selected' : '' }}>
-                                                Pending
-                                            </option>
-                                            <option value="approved"
-                                                {{ $user->status == config('site.user_status.approved') ? 'selected' : '' }}>
-                                                Approved
-                                            </option>
-                                            <option value="blocked"
-                                                {{ $user->status == config('site.user_status.blocked') ? 'selected' : '' }}>
-                                                Blocked
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            @empty
-                                <h1> No Users Found </h1>
-                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -60,14 +33,88 @@
 @section('contentfooter')
     <script>
         $(document).ready(function() {
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $('.changeUserStatus').on('change', function(e) {
+
+
+
+            // datatable
+
+            var table = $('#dataTable').DataTable({
+                responsive: true,
+                processing: true,
+                bAutoWidth: false,
+                serverSide: true,
+                order: [
+                    [1, 'desc']
+                ],
+                ajax: {
+                    type: 'GET',
+                    url: "{{ route('admin.users.index') }}",
+                    dataType: "JSON",
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'first_name',
+                        name: 'first_name',
+                    },
+                    {
+                        data: 'last_name',
+                        name: 'last_name',
+                    },
+                    {
+                        data: 'email',
+                        name: 'email',
+                    },
+                    {
+                        data: 'mobile_no',
+                        name: 'mobile_no',
+                    },
+                    {
+                        data: 'status',
+                        render: function(data, type, row) {
+                            const statusOptions = [{
+                                    value: "{{config('site.user_status.approved')}}" ,
+                                    label: 'Approved'
+                                },
+                                {
+                                    value: "{{config('site.user_status.pending')}}" ,
+                                    label: 'Pending'
+                                },
+                                {
+                                    value:" {{config('site.user_status.blocked')}}" ,
+                                    label: 'Blocked'
+                                },
+                            ];
+                                console.log(data);
+                            let optionsHtml = '';
+
+                            for (const option of statusOptions) {
+                                const selected = data === option.value ? 'selected' : '';
+                                optionsHtml +=
+                                    `<option value="${option.value}" data-status="${option.value}" ${selected}>${option.label}</option>`;
+                            }
+
+                            const selectHtml =
+                                `<select name="status" data-userId=${row.id}  class="form-select changeUserStatus" aria-label="Default select example" >${optionsHtml}</select>`;
+                            return selectHtml;
+                        }
+                    },
+                ],
+            });
+
+            $(document).on('change', '.changeUserStatus', function(e) {
+
                 e.preventDefault();
-                console.log("dfghjkl");
                 var userId = $(this).attr('data-userId');
                 var status = $(this).val();
                 var url = "{{ route('admin.change-status') }}";
@@ -89,6 +136,7 @@
                     }
                 });
             });
+
         });
     </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserService
 {
@@ -16,11 +17,15 @@ class UserService
 
     public function collection()
     {
-        $users = User::get();
-        $userscount = $users->reject(function ($user, $key) {
-            return $user->hasRole('admin');
-        });
-        return $userscount;
+        $data = User::select(['id', 'first_name', 'last_name', 'email', 'mobile_no', 'status']);
+        return DataTables::of($data)
+            ->orderColumn('name', function ($query, $order) {
+                $query->orderBy('id', $order);
+            })
+            ->rawColumns(['name'])
+            ->setRowId('id')
+            ->addIndexColumn()
+            ->make(true);
     }
 
     public function changeStatus($inputs)
@@ -33,6 +38,5 @@ class UserService
 
             return response()->json(['message' => __('entity.entityUpdated', ['entity' => 'User'])]);
         }
-
     }
 }
