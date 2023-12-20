@@ -32,7 +32,7 @@
                         <label for="staticEmail" class="col-sm-2 col-form-label">Category</label>
                         <div class="col-sm-10">
                             <input type="text" id="name" name="name" class="form-control"
-                                placeholder="Enter category"
+                                placeholder="Please enter category"
                                 @if (isset($category)) value="{{ old('name', $category->name) }}">
                                         @else
                                         value="{{ old('name') }}"> @endif
