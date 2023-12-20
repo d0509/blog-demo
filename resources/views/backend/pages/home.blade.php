@@ -81,7 +81,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-bar me-1"></i>
-                                Month Wise Blog Posts
+                                Publishing Frequency by Month
                             </div>
                             <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
                         </div>
@@ -90,7 +90,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-bar me-1"></i>
-                                Category Wise Blog Posts
+                                Categorized Blog Post 
                             </div>
                             <div class="card-body"><canvas id="myPieChart" width="100%" height="40"></canvas></div>
                         </div>

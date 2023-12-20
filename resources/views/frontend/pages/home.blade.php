@@ -108,8 +108,8 @@
                                  <h2 class="widget-title">Search</h2>
                                  <form action="{{ route('home') }}" method="get" class="form-inline search-form">
                                      <div class="form-group">
-                                         <input type="text" value="{{ request('search') }}" id="form1"
-                                             name="search" class="form-control" placeholder="Search Blog Title">
+                                         <input type="text" value="{{ request('q') }}" id="form1"
+                                             name="q" class="form-control" placeholder="Search Blog Title">
                                      </div>
                                      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                  </form>
