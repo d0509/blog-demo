@@ -57,8 +57,8 @@ class PostService
                     ->make(true);
             } else {
                 $query = Post::select("*")->with('category');
-                if (request('search')) {
-                    $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
+                if (request('q')) {
+                    $blogs = $query->Search(request('q'))->whereStatus('publish')->latest()->get();
                     return $blogs;
                 } elseif (request('category')) {
 
