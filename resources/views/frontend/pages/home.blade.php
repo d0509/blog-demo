@@ -1,9 +1,45 @@
  @extends('frontend.master.layout')
  @section('contentHeader')
      <title> {{ env('APP_NAME') }} </title>
+     <style>
+         .loader-container {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background-color: rgba(0, 0, 0, 0.5);
+             z-index: 9999;
+         }
+
+         .loader {
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             border: 5px solid #f3f3f3;
+             border-top: 5px solid #007bff;
+             border-radius: 50%;
+             width: 50px;
+             height: 50px;
+             animation: spin 2s linear infinite;
+         }
+
+         @keyframes spin {
+             0% {
+                 transform: translate(-50%, -50%) rotate(0deg);
+             }
+
+             100% {
+                 transform: translate(-50%, -50%) rotate(360deg);
+             }
+         }
+     </style>
  @endsection
 
  @section('content')
+     <x-loader>
+     </x-loader>
      <div id="wrapper">
          <div class="collapse top-search" id="collapseExample">
              <div class="card card-block">
@@ -124,8 +160,25 @@
              </div><!-- end container -->
          </section>
 
-
          <div class="dmtop">Scroll to Top</div>
 
      </div><!-- end wrapper -->
+ @endsection
+ @section('contentfooter')
+     <script>
+        //  window.addEventListener('load', function () {
+        //      // This code ensures that the loader stays visible until the entire page is loaded.
+        //      var loaderContainer = document.querySelector('.loader-container');
+        //      if (loaderContainer) {
+        //          loaderContainer.style.display = 'none';
+        //      }
+        //  });
+         $(document).ready(function() {
+             // This code ensures that the loader stays visible until the entire page is loaded.
+             var loaderContainer = $('.loader-container');
+             if (loaderContainer.length) {
+                 loaderContainer.hide();
+             }
+         });
+     </script>
  @endsection
