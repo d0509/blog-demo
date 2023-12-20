@@ -186,6 +186,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'is_active' =>'status',
+        'category_id' => 'category',
+    ],
 
 ];

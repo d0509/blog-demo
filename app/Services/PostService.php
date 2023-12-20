@@ -24,12 +24,8 @@ class PostService
     {
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
-            // $data = Post::select('category_id', 'author', 'title', 'created_at', 'status', 'slug')
-            //     ->with('category')
-            //     ->whereHas('category', function ($q) {
-            //     });
             if ($isForListing == false) {
-                $data = Post::select("*")
+                $data = Post::select('id', 'category_id', 'author', 'title', 'description', 'status', 'slug', 'created_at')
                     ->with('category')->whereHas('category', function ($q) {
                         $q->where('deleted_at', null);
                     });
@@ -64,11 +60,7 @@ class PostService
                     $blogs = $query->Search(request('search'))->whereStatus('publish')->latest()->get();
                     return $blogs;
                 } elseif (request('category')) {
-
-
-                    // $blogs = $query->where()
                     $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
-                    // dd($blogs);
                     return $blogs;
                 } else {
                     $query = Post::select("*")->with('category');
@@ -117,7 +109,7 @@ class PostService
     {
         $blog = Post::whereSlug($slug)->first();
         if (!$blog) {
-            return ['message' => "No post found"];
+            return ['message' => "No Blogs found"];
         }
         return $blog;
     }
@@ -129,10 +121,10 @@ class PostService
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
-        $message = $slug ? __('entity.entityUpdated', ['entity' => 'Post']) : __('entity.entityCreated', ['entity' => 'Post']);
+        $message = $slug ? __('entity.entityUpdated', ['entity' => 'Blog']) : __('entity.entityCreated', ['entity' => 'Blog']);
 
         $this->handleImageUpload($inputs, $post);
-        session()->flash('success', $message);
+        toastr()->closeButton()->addSuccess($message);
         return $post;
     }
 
@@ -157,9 +149,13 @@ class PostService
         $post = Post::findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
+
+            if ($postBannerImage) {
+                $postBannerImage->delete();
+            }
+            
             $post->delete();
-            $postBannerImage->delete();
         }
-        return response()->json(['message' => 'Category deleted successfully']);
+        return response()->json(['message' => 'Blog deleted successfully']);
     }
 }

@@ -1,5 +1,7 @@
 @extends('backend.master.layout')
-@section('title', 'Blogs')
+@section('contentHeader')
+        <title> {{ env('APP_NAME') }} | {{ __('headers.blogs') }} </title>
+@endsection
 @section('content')
     <div class="container-fluid px-4">
         <main>
@@ -142,10 +144,8 @@
 
                         },
                         success: function(response) {
-                            let msg = response.message;
-                            if (msg) {
-                                Swal.fire('Success!', msg, 'success');
-                            }
+                                toastr.success(response.message, "Success");
+                            
                             $('#dataTable').DataTable().ajax.reload();
                         }
                     });

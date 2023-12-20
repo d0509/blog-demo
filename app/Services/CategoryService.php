@@ -53,7 +53,7 @@ class CategoryService
     public function store($inputs)
     {
         $this->categoryObj->fill($inputs->except('slug'))->save();
-        session()->flash('success', 'Category created successfully');
+        toastr()->closeButton()->addSuccess(__('entity.entityCreated', ['entity' => 'Category']));
         return redirect()->route('admin.categories.index');
     }
 
@@ -68,7 +68,7 @@ class CategoryService
         $category = Category::whereSlug($slug)->first();
         $category->update($inputs->except('slug'));
         $category->save();
-        session()->flash('success', ['message' => __('entity.entityUpdated', ['entity' => 'Category'])]);
+        toastr()->closeButton()->addSuccess(__('entity.entityUpdated', ['entity' => 'Category']));
         return redirect()->route('admin.categories.index');
     }
 
@@ -78,7 +78,6 @@ class CategoryService
         if ($category) {
             $category->delete();
         }
-        // session()->flash('success', __('entity.entityDeleted', ['entity' => 'Category']));
         return response()->json(['message' => __('entity.entityDeleted', ['entity' => 'Category'])]);
     }
 

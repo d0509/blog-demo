@@ -1,9 +1,12 @@
 @extends('backend.master.layout')
-@if (isset($blog))
-    @section('title', 'Update Blog')
-@else
-    @section('title', 'Create Blog')
-@endif
+@section('contentHeader')
+    @if (isset($blog))
+        <title> {{ env('APP_NAME') }} | {{ __('headers.edit_blog') }} </title>
+    @else
+        <title> {{ env('APP_NAME') }} | {{ __('headers.create_blog') }} </title>
+    @endif
+@endsection
+
 @section('content')
     <div class="container-fluid px-4">
         <main>
@@ -14,6 +17,7 @@
                     @else
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Blog</h1>
                     @endif
+                    <a class="btn btn-primary float-right" href="{{ route('admin.blogs.index')}}">Back</a>
                 </div>
                 @if (isset($blog))
                     <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
@@ -27,7 +31,7 @@
                 <div class="form-group row mt-5">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
-                        <input type="text" id="title" name="title" class="form-control" placeholder="Enter title"
+                        <input type="text" id="title" name="title" class="form-control" placeholder="Please enter title"
                             @if (isset($blog)) value="{{ old('title', $blog->title) }}">
                                     @else
                                     value="{{ old('title') }}"> @endif
@@ -58,8 +62,8 @@
                         <div class="col-sm-10 ">
                             <textarea {{ old('description') }} name="description" id="summernote" class="form-control " placeholder="Description">
                             @if (isset($blog))
-                            {{ old('description', $blog->description) }}@else{{ old('description') }}
-                            @endif
+{{ old('description', $blog->description) }}@else{{ old('description') }}
+@endif
                             </textarea>
                             @error('description')
                                 <span class="text-danger">
@@ -85,7 +89,7 @@
                             <label for="staticEmail" class="col-sm-2 col-form-label">Banner</label>
                             <div class="col-sm-10">
                                 <input type="file"  accept="image/png, image/jpeg, image/jpg" id="banner" id="banner" name="banner" class="form-control">
-                                @error('author')
+                                @error('banner')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror
                             </div>

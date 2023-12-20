@@ -1,9 +1,11 @@
 @extends('backend.master.layout')
-@if (isset($category))
-    @section('title', 'Update Category')
-@else
-    @section('title', 'Create Category')
-@endif
+@section('contentHeader')
+    @if (isset($category))
+        <title> {{ env('APP_NAME') }} | {{ __('headers.edit_category') }} </title>
+    @else
+        <title> {{ env('APP_NAME') }} | {{ __('headers.create_category') }} </title>
+    @endif
+@endsection
 @section('content')
     <div class="container-fluid px-4">
         <main>
@@ -14,7 +16,7 @@
                     @else
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Category</h1>
                     @endif
-                </div>
+                    <a class="btn btn-primary float-right" href="{{ route('admin.categories.index')}}">Back</a>                </div>
                 @if (isset($category))
                     <form action="{{ route('admin.categories.update', ['category' => $category->slug]) }}" method="post">
                         @csrf
@@ -30,7 +32,7 @@
                         <label for="staticEmail" class="col-sm-2 col-form-label">Category</label>
                         <div class="col-sm-10">
                             <input type="text" id="name" name="name" class="form-control"
-                                placeholder="Enter category"
+                                placeholder="Please enter category"
                                 @if (isset($category)) value="{{ old('name', $category->name) }}">
                                         @else
                                         value="{{ old('name') }}"> @endif
