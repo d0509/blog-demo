@@ -82,22 +82,31 @@
                     {
                         data: 'status',
                         render: function(data, type, row) {
-                            return `<select class="form-select changeUserStatus"  data-userId=${row.id}
-                            aria-label="Default select example" name="status">
+                            const statusOptions = [{
+                                    value: "{{config('site.user_status.approved')}}" ,
+                                    label: 'Approved'
+                                },
+                                {
+                                    value: "{{config('site.user_status.pending')}}" ,
+                                    label: 'Pending'
+                                },
+                                {
+                                    value:" {{config('site.user_status.blocked')}}" ,
+                                    label: 'Blocked'
+                                },
+                            ];
+                                console.log(data);
+                            let optionsHtml = '';
 
-                            <option value="pending"
-                                ${row.status == "pending" ? 'selected' : ''}>
-                                Pending
-                            </option>
-                            <option value="approved"
-                                ${row.status == "approved" ? 'selected' : ''}>
-                                Approved
-                            </option>
-                            <option value="blocked"
-                                ${row.status == "blocked" ? 'selected' : ''}>
-                                Blocked
-                            </option>
-                        </select>`;
+                            for (const option of statusOptions) {
+                                const selected = data === option.value ? 'selected' : '';
+                                optionsHtml +=
+                                    `<option value="${option.value}" data-status="${option.value}" ${selected}>${option.label}</option>`;
+                            }
+
+                            const selectHtml =
+                                `<select name="status" data-userId=${row.id}  class="form-select changeUserStatus" aria-label="Default select example" >${optionsHtml}</select>`;
+                            return selectHtml;
                         }
                     },
                 ],

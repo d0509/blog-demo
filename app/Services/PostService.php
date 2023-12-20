@@ -50,7 +50,7 @@ class PostService
                     ->orderColumn('category_id', function ($query, $order) {
                         $query->orderBy('name', $order);
                     })
-                    ->rawColumns(['action', 'title', 'created_at'])
+                    ->rawColumns(['action', 'title', 'created_at','category_id'])
                     ->setRowId('id')
                     ->addIndexColumn()
                     ->make(true);
