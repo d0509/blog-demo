@@ -1,5 +1,7 @@
 @extends('backend.master.layout')
-@section('title', 'categories')
+@section('contentHeader')
+        <title> {{ env('APP_NAME') }} | {{ __('headers.categories') }} </title>
+@endsection
 @section('content')
     <div class="container-fluid px-4">
         <main>

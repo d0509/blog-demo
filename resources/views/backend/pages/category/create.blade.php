@@ -1,9 +1,11 @@
 @extends('backend.master.layout')
-@if (isset($category))
-    @section('title', 'Update Category')
-@else
-    @section('title', 'Create Category')
-@endif
+@section('contentHeader')
+    @if (isset($category))
+        <title> {{ env('APP_NAME') }} | {{ __('headers.edit_category') }} </title>
+    @else
+        <title> {{ env('APP_NAME') }} | {{ __('headers.create_category') }} </title>
+    @endif
+@endsection
 @section('content')
     <div class="container-fluid px-4">
         <main>

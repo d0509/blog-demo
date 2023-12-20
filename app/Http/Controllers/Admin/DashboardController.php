@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -21,12 +22,37 @@ class DashboardController extends Controller
 
         $blogCount = Post::count();
 
-        return view('backend.pages.home',[
+       
+        
+        $blogs = Post::selectRaw("COUNT(*) as count")
+        ->selectRaw("MONTHNAME(created_at) as month_name")
+        ->selectRaw("MONTH(created_at) as month_number")
+        ->whereYear('created_at', date('Y'))
+        ->groupBy(DB::raw("MONTH(created_at)"), DB::raw("MONTHNAME(created_at)"))
+        ->pluck('count', 'month_name');
+        
+        // Create an array with all months and set count to 0
+        $months = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        
+        // Merge the two arrays, replacing missing months with count 0
+        $blogs = array_merge(array_fill_keys($months, 0), $blogs->toArray());
+
+        $categories = Post::select('categories.name as category_name')
+        ->selectRaw("COUNT(*) as count")
+        ->join('categories', 'categories.id', '=', 'posts.category_id')
+        ->groupBy('category_name')
+        ->get();
+        
+        return view('backend.pages.home', [
             'usersCount' => $userscount,
             'categoryCount' => $categoryCount,
             'postCount' => $blogCount,
+            'data' => $blogs,
+            'categories' => $categories,
         ]);
-
     }
 
     public function create()
