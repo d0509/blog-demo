@@ -1,5 +1,5 @@
- @extends('frontend.master.layout')
- @section('contentHeader')
+@extends('frontend.master.layout')
+@section('contentHeader')
      <title> {{ env('APP_NAME') }} </title>
      <style>
          .loader-container {

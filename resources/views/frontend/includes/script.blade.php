@@ -13,3 +13,5 @@
 <script src="{{ asset('assets/front-assets/js/tether.min.js')}}"></script>
 <script src="{{ asset('assets/front-assets/js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('assets/front-assets/js/custom.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript" src="{{ asset('assets/front-assets/js/jquery-comments.js')}}"></script>

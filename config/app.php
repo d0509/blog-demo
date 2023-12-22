@@ -172,6 +172,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Plank\Mediable\MediableServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+
     ])->toArray(),
 
     /*
@@ -189,6 +191,8 @@ return [
         // 'Example' => App\Facades\Example::class,
         'MediaUploader' => Plank\Mediable\MediaUploaderFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+
     ])->toArray(),
 
 ];
