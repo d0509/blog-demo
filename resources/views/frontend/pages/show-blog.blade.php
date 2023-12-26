@@ -37,7 +37,13 @@
                                 <small><a href="blog-author.html" title="">by {{ $post->author }}</a></small>
                             </div><!-- end meta -->
                         </div><!-- end title -->
-                            <h2 class="text-center">{!! $shareComponent !!}</h2>
+                            <h2 class="text-center">
+                                <div id="social-links">
+                                    <ul>
+                                        {!! $shareComponent !!}
+                                    </ul>
+                                </div>
+                            </h2>
                             
                         <div class="single-post-media">
                             @foreach ($post->media as $media)

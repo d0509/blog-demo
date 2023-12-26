@@ -19,21 +19,25 @@ class PostController extends Controller
     }
 
     public function show(Request $request){
-
-        $shareComponent = \Share::page(
-            'https://www.positronx.io/create-autocomplete-search-in-laravel-with-typeahead-js/',
-            
-        )
-        ->facebook()
-        ->twitter()
-        ->linkedin()
-        ->telegram()
-        ->whatsapp()        
-        ->reddit();
-        
-
         $post = $this->postService->resource(request('slug'));
         $categories = $this->categoryService->collection(true);
+
+        $shareComponent = \Share::page(
+            // 'https://www.positronx.io/create-autocomplete-search-in-laravel-with-typeahead-js/',.
+            // 'https://packagist.org/packages/jorenvanhocht/laravel-share',
+            // 'https://laravel.com/docs/10.x/socialite#installation',
+            'https://www.addthis.com/',
+            // url()->current(),
+       )
+       ->facebook()
+       ->twitter()
+       ->linkedin()
+       ->telegram()
+       ->whatsapp() 
+       ->reddit();
+
+    //    dd($shareComponent);
+
         // dd($categories);
         return view('frontend.pages.show-blog',[
             'post' => $post,
