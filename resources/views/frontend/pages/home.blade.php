@@ -81,7 +81,6 @@
                                              <h4><a href="{{ route('posts.show', ['slug' => $blog->slug]) }}"
                                                      title="">{{ $blog->title }}</a></h4>
                                              <p>{{ $blog->excerpt }}</p>
-                                             {{-- <small><i class="fa fa-eye"></i> {{ $blog->views }}</small> --}}
                                              <small>{{ $blog->created_at }}</small>
                                              <small><a href="#" title="">{{ $blog->author }}</a></small>
                                          </div><!-- end meta -->
