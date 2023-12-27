@@ -105,17 +105,21 @@
         </thead>
         <tbody>
             @forelse ($blogs as $blog)
+            {{-- {{ dump($blog->media[0]->filename)}} --}}
                 <tr>
                     <td class="post-media">
                         @if ($blog->media->isNotEmpty())
+                       
+                        {{-- {{dd($blog->media[0]->filename)}} --}}
                             <img width="300px"
+                           {{-- {{ dd(public_path() . $image_path);}} --}}
                                 src="{{ asset('storage/banner/' . $blog->media[0]->filename . '.' . $blog->media[0]->extension) }}"
                                 alt="" class="img-fluid">
-                        @else
+                         @else 
                         <img width="300px"
                             src="https://images.pexels.com/photos/1342609/pexels-photo-1342609.jpeg?auto=compress&cs=tinysrgb&w=600"
                             alt="">
-                        @endif 
+                        @endif  
                         {{-- <img width="300px"
                             src="https://images.pexels.com/photos/1342609/pexels-photo-1342609.jpeg?auto=compress&cs=tinysrgb&w=600"
                             alt=""> --}}

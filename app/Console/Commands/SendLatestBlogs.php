@@ -2,12 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\SendLatestBlogs as MailSendLatestBlogs;
+use App\Jobs\LatestBlogsMail;
 use App\Models\Post;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Dompdf\Adapter\PDFLib;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class SendLatestBlogs extends Command
 {
@@ -30,20 +29,24 @@ class SendLatestBlogs extends Command
      */
     public function handle()
     {
-        $blogs = Post::with(['media' => function ($query) {
-            $query->latest()->first();
-        }])->latest()->take(2)->get();
-        
-        $email = "admin@gmail.com";
-        
-        // $pdf = Pdf::loadView('pdf.latest-blog-pdf');
-        // return $pdf;  
+
+        $blogs = Post::with('media')->latest()->take(2)->get();
 
         if($blogs->count() > 0)
         { 
-            Mail::to($email)->send(new MailSendLatestBlogs($blogs));   
+            $pdf = PDF::loadView('pdf.latest-blog-pdf', compact('blogs'));
+            $pdfName = 'blog_' . now()->timestamp . '.pdf';
+            
+            $pdf->save(public_path() . '\storage\posts' . $pdfName);
+            $pdfPath = public_path() . '\storage\posts' . $pdfName;
+            
+            try {
+                LatestBlogsMail::dispatch($blogs, $pdfPath);
+            } catch (\Exception $e) {
+                Log::error('PDF generation error: ' . $e->getMessage());
+            }
+
             $this->info('Success');
         }
-        // info('hello world');
     }
 }

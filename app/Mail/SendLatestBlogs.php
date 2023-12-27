@@ -5,20 +5,26 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendLatestBlogs extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $blogs;
+    public $pdfPath;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(protected $blogs)
+    public function __construct($blogs,$pdfPath)
     {
-        //
+        $this->blogs = $blogs;
+        $this->pdfPath = $pdfPath;
     }
 
     /**
@@ -38,17 +44,16 @@ class SendLatestBlogs extends Mailable
     {
         return new Content(
             view: 'mail.send-latest-blog',
-            with:['blogs' => $this->blogs],
+            with: ['blogs' => $this->blogs]
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromPath($this->pdfPath)
+                    ->as('blogs.pdf')
+                    ->withMime('application/pdf'),
+        ];
     }
 }
