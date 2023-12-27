@@ -173,7 +173,7 @@ return [
         Plank\Mediable\MediableServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-
+        Jorenvh\Share\Providers\ShareServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -192,7 +192,7 @@ return [
         'MediaUploader' => Plank\Mediable\MediaUploaderFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'Share' => Jorenvh\Share\ShareFacade::class,
     ])->toArray(),
 
 ];

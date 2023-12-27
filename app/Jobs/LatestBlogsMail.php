@@ -24,13 +24,16 @@ class LatestBlogsMail implements ShouldQueue
     public function __construct($blogs,$pdfPath)
     {
         $this->blogs = $blogs;
-        $this->pdfPath = $pdfPath;    }
+        $this->pdfPath = $pdfPath;   
+    }
 
     /**
      * Execute the job.
      */
     public function handle(): void
     {
-        Mail::to("admin@gmail.com")->send(new MailSendLatestBlogs($this->blogs, $this->pdfPath));
+        for ($i = 1; $i <= 25; $i++) {
+            Mail::to("admin@gmail.com")->queue(new MailSendLatestBlogs($this->blogs, $this->pdfPath))->delay(($i - 1) * 60); // Delay in seconds
+        }
     }
 }
