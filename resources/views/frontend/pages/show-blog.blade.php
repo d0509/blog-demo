@@ -75,14 +75,32 @@
                         </div><!-- end row -->
 
                     </div><!-- end page-wrapper -->
+                    <div id="comments-container" class="mt-5"></div>
                 </div><!-- end col -->
             </div><!-- end row -->
         </div><!-- end container -->
     </section>
 
 
-
     <div class="dmtop">Scroll to Top</div>
 
     </div>
+@endsection
+@section('contentfooter')
+<script>
+    $('#comments-container').comments({
+  profilePictureURL: 'https://viima-app.s3.amazonaws.com/media/public/defaults/user-icon.png',
+  getComments: function(success, error) {
+    var commentsArray = [{
+      id: 1,
+      created: '2015-10-01',
+      content: 'Lorem ipsum dolort sit amet',
+      fullname: 'Simon Powell',
+      upvote_count: 2,
+      user_has_upvoted: false
+    }];
+    success(commentsArray);
+  }
+});
+</script>
 @endsection
