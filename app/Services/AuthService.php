@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Jobs\UpdateUser;
 use App\Models\User;
-use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 

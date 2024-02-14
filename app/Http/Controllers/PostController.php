@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
-use App\Services\PostService;
 use App\Services\TagService;
 use Illuminate\Http\Request;
+use App\Services\PostService;
+use App\Services\CategoryService;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -47,6 +48,6 @@ class PostController extends Controller
             'categories' => $categories,
             'shareComponent' => $shareComponent,
             'tags' => $tags,
-        ]);
+    ]);
     }
 }

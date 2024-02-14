@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryService
@@ -46,7 +45,6 @@ class CategoryService
         } else {
             $data = Category::select('slug', 'name', 'id')->where('is_active', 1)->get();
             return $data;
-            // dd($data->toArray());
         }
     }
 
