@@ -3,27 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use App\Services\TagService;
 use App\Services\PostService;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Post\Upsert;
 use App\Services\CategoryService;
+use App\Http\Requests\Post\Upsert;
+use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
 
-    protected $postService,$categoryService;
+    protected $postService, $categoryService, $tagService;
 
     public function __construct()
     {
         $this->postService = new PostService;
         $this->categoryService = new CategoryService;
+        $this->tagService = new TagService;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()){
-            $posts =  $this->postService->collection();
-            return $posts;
+        if ($request->ajax()) {
+            return $this->postService->collection();
         }
         return view('backend.pages.blog.index');
     }
@@ -31,21 +32,24 @@ class PostController extends Controller
     public function create()
     {
         $category = $this->categoryService->collection(true);
-        return view('backend.pages.blog.create',[
-            'categories' => $category
-            ]);
+        $tags = $this->tagService->collection(true);
+
+        return view('backend.pages.blog.create', [
+            'categories' => $category,
+            'tags' => $tags
+        ]);
     }
 
     public function store(Upsert $request)
     {
-       $this->postService->upsert($request);
-       return redirect()->route('admin.blogs.index');
+        $this->postService->upsert($request);
+        return redirect()->route('admin.blogs.index');
     }
 
     public function show(String $slug)
     {
         $data = $this->postService->resource($slug);
-        return view('backend.pages.blog.show',[
+        return view('backend.pages.blog.show', [
             'blog' => $data,
         ]);
     }
@@ -54,9 +58,12 @@ class PostController extends Controller
     {
         $category = $this->categoryService->collection(true);
         $data = $this->postService->resource($slug);
-        return view('backend.pages.blog.create',[
+        $tags = $this->tagService->collection(true);
+        
+        return view('backend.pages.blog.create', [
             'blog' => $data,
             'categories' => $category,
+            'tags' => $tags,
         ]);
     }
 
@@ -65,9 +72,8 @@ class PostController extends Controller
      */
     public function update(Upsert $request, string $id)
     {
-        $this->postService->upsert($request,$id);
+        $this->postService->upsert($request, $id);
         return redirect()->route('admin.blogs.index');
-    
     }
 
     public function destroy($post)

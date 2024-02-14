@@ -60,5 +60,8 @@ class Post extends Model
         return $query->where('title', 'like', '%' . $keyword . '%');
     }
 
-                    
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

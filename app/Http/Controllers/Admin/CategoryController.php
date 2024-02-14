@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Services\CategoryService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\Create;
-use App\Models\Category;
-use App\Services\CategoryService as CategoryService;
-use Illuminate\Http\Request;
-
 class CategoryController extends Controller
 {
     protected $categoryService;
@@ -20,8 +19,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $companies =  $this->categoryService->collection();
-            return $companies;
+            return $this->categoryService->collection();
         }
         return view('backend.pages.category.index');
     }
