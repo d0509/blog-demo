@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Jobs\UpdateUser;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -43,11 +45,11 @@ class AuthService
         if ($user) {
             $user = User::whereEmail($inputs['email'])->first();
             if ($user->status == 'approved') {
-                if (!Auth::attempt($inputs)) {
+                if (!Auth::attempt($inputs)) { 
                     throw ValidationException::withMessages([
                         'email' => 'Your provided credentials could not be verified.'
                     ]);
-                }
+                } 
             } elseif($user->status == 'pending') {
                 throw ValidationException::withMessages([
                     'email' => 'You are not approved by the admin. Please contact admin to login.'
