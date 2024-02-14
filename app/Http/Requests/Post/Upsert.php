@@ -29,6 +29,7 @@ class Upsert extends FormRequest
             'description' => 'required',
             'author' => 'required|string|min:3|regex:/([A-Za-z])+/',
             'status' => 'not_in:default|required',
+            'tags' => 'required|array'
         ];
 
         if ($this->isMethod('put') || $this->isMethod('patch')) {
@@ -36,7 +37,7 @@ class Upsert extends FormRequest
         } else {
             $rules['banner'] = 'required|image';
         }
-        return $rules;
+            return $rules;
     }
     public function messages()
     {

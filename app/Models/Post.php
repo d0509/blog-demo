@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Plank\Mediable\Mediable;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -17,6 +17,7 @@ class Post extends Model
         'status',
         'author',
         'category_id',
+        'tag_id',
         'title',
         'description',
     ];
@@ -46,6 +47,10 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function  tags(){
+        return $this->belongsToMany(Tag::class);
     }
 
     public function scopeInCategory($query, $categorySlug)

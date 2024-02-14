@@ -73,11 +73,16 @@
                                          </div><!-- end col -->
 
                                          <div class="blog-meta big-meta col-md-8">
-                                             <span class="bg-aqua">
-                                                 <a href="" title="">
-                                                     {{ $blog->category->name }}
-                                                 </a>
-                                             </span>
+                                             
+                                                    @foreach ($blog->tags as $tag)
+                                                    <span class="bg-aqua mr-1">
+                                                        <a href="" title="" >
+                                                        {{  $tag->name }}
+                                                    </a>
+                                                </span>
+                                                    @endforeach
+                                                   
+                                                
                                              <h4><a href="{{ route('posts.show', ['slug' => $blog->slug]) }}"
                                                      title="">{{ $blog->title }}</a></h4>
                                              <p>{{ $blog->excerpt }}</p>

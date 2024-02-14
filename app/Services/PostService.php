@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Category;
-use App\Models\Post;
 use Carbon\Carbon;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-use Plank\Mediable\Facades\MediaUploader;
-use Plank\Mediable\Media;
 use Yajra\DataTables\Facades\DataTables;
+use Plank\Mediable\Facades\MediaUploader;
 
 class PostService
 {
@@ -79,7 +77,6 @@ class PostService
         } elseif (request('category')) {
 
             $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
-            // dd($blogs);
             return $blogs;
         } else {
             $query = Post::select("*")->with('category');
@@ -105,11 +102,14 @@ class PostService
 
     public function upsert($inputs, $slug = null)
     {
-        // dd($slug);
         $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
+
+        $tags = $inputs->get('tags');
+        $post->tags()->sync($tags);
+
         $message = $slug ? __('entity.entityUpdated', ['entity' => 'Blog']) : __('entity.entityCreated', ['entity' => 'Blog']);
 
         $this->handleImageUpload($inputs, $post);
@@ -138,8 +138,9 @@ class PostService
         $post = Post::findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
-            $post->delete();
             $postBannerImage->delete();
+            $post->tags()->detach();
+            $post->delete();
         }
         return response()->json(['message' => 'Blog deleted successfully']);
     }

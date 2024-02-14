@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\PostController as AdminPostController;
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\CategoryStatusController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\UserStatusController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PostController as ControllersPostController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserStatusController;
+use App\Http\Controllers\Admin\CategoryStatusController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\PostController as ControllersPostController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('users', UserController::class);
+        Route::resource('tags',TagController::class);
         Route::post('change-status', UserStatusController::class)->name('change-status');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('blogs', AdminPostController::class);
