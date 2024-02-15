@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
-use App\Services\PostService;
-use Faker\Core\Blood;
 use Illuminate\Http\Request;
+use App\Services\PostService;
+use App\Services\CategoryService;
 
 class HomeController extends Controller
 {

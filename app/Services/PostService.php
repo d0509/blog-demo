@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Category;
-use App\Models\Post;
 use Carbon\Carbon;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-use Plank\Mediable\Facades\MediaUploader;
-use Plank\Mediable\Media;
 use Yajra\DataTables\Facades\DataTables;
+use Plank\Mediable\Facades\MediaUploader;
 
 class PostService
 {
@@ -22,7 +20,7 @@ class PostService
 
     public function collection($isForListing = false)
     {
-        $query = Post::select("*")->with('category');
+        $query =$this->postObj->select("*")->with('category');
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             $query->whereHas('category', function ($q) {
@@ -72,18 +70,16 @@ class PostService
 
     protected function userListing($query)
     {
-        $query = Post::select("*")->with('category');
+        $query = $this->postObj->select("*")->with('category')->whereStatus('publish');
         if (request('q')) {
-            $blogs = $query->Search(request('qp'))->whereStatus('publish')->latest()->get();
+            $blogs = $query->Search(request('qp'))->latest()->get();
             return $blogs;
         } elseif (request('category')) {
-
-            $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
-            // dd($blogs);
+            $blogs = $query->InCategory(request('category'))->latest()->get();
             return $blogs;
         } else {
-            $query = Post::select("*")->with('category');
-            $blogs = Post::with('category')
+            $query =$this->postObj->select("*")->with('category');
+            $blogs = $this->postObj->with('category')
                 ->where('status', 'publish')
                 ->whereHas('category', function ($query) {
                     $query->where('is_active', 1);
@@ -96,7 +92,7 @@ class PostService
 
     public function resource($slug)
     {
-        $blog = Post::whereSlug($slug)->first();
+        $blog = $this->postObj->whereSlug($slug)->first();
         if (!$blog) {
             return ['message' => "No Blogs found"];
         }
@@ -105,11 +101,14 @@ class PostService
 
     public function upsert($inputs, $slug = null)
     {
-        // dd($slug);
         $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
+
+        $tags = $inputs->get('tags');
+        $post->tags()->sync($tags);
+
         $message = $slug ? __('entity.entityUpdated', ['entity' => 'Blog']) : __('entity.entityCreated', ['entity' => 'Blog']);
 
         $this->handleImageUpload($inputs, $post);
@@ -135,11 +134,12 @@ class PostService
 
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->postObj->findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
-            $post->delete();
             $postBannerImage->delete();
+            $post->tags()->detach();
+            $post->delete();
         }
         return response()->json(['message' => 'Blog deleted successfully']);
     }

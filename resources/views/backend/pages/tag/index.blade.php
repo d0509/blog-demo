@@ -1,15 +1,16 @@
 @extends('backend.master.layout')
 @section('contentHeader')
-        <title> {{ env('APP_NAME') }} | {{ __('headers.categories') }} </title>
+        <title> {{ env('APP_NAME') }} | {{ __('headers.tags') }} </title>
 @endsection
 @section('content')
     <div class="container-fluid px-4">
         <main>
             <div class="container-fluid px-4">
                 <div class="d-sm-flex align-items-center justify-content-between mb-4 mt-5">
-                    <h1 class="h3 mb-0 text-gray-800">Categories</h1>
-                    <a href="{{ route('admin.categories.create') }}"
-                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fa-solid fa-list"></i>Create Category</a>
+                    <h1 class="h3 mb-0 text-gray-800">Tags</h1>
+                    <a href="{{ route('admin.tags.create') }}"
+                        class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fa-solid fa-tag"
+                            style="margin-right: 5px"></i>Create Tag</a>
                 </div>
 
                 <div class="row"
@@ -20,9 +21,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Slug</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,7 +47,7 @@
                 ],
                 ajax: {
                     type: 'GET',
-                    url: "{{ route('admin.categories.index') }}",
+                    url: "{{ route('admin.tags.index') }}",
                     dataType: "JSON",
                 },
                 columns: [{
@@ -62,17 +61,6 @@
                         name: 'name',
                     },
                     {
-                        data: 'slug',
-                        name: 'slug',
-                        orderable: false,
-                    },
-                    {
-                        data: 'is_active',
-                        name: 'is_active',
-                        orderable: false,
-                        searchable: false,
-                    },
-                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
@@ -81,43 +69,16 @@
                 ],
 
             });
-
-
-
-            $(document).on('click', '#flexSwitchCheckChecked', function(e) {
-                e.preventDefault();
-                var id = $(this).attr('data-categoryId');
-                var url = "{{ route('admin.categories.status') }}";
-                var token = "{{ csrf_token() }}";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    data: {
-                        id: id,
-                        "_token": "{{ csrf_token() }}",
-                    },
-                    success: function(response) {
-                        toastr.success(response.message, "Success");
-
-                        console.log(response);
-                        $('#dataTable').DataTable().ajax.reload();
-                    }
-                });
-
-            });
         });
 
-        function deleteCategory(id) {
+        function deleteTag(id) {
             var id = id;
-            var url = "{{ route('admin.categories.destroy', ':id') }}";
+            var url = "{{ route('admin.tags.destroy', ':id') }}";
             url = url.replace(':id', id);
             var token = "{{ csrf_token() }}";
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You want to delete this category?",
+                text: "You want to delete this tag?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

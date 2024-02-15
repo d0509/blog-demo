@@ -17,7 +17,7 @@
                     @else
                         <h1 class="h3 mb-0 text-gray-800 text-center">Create Blog</h1>
                     @endif
-                    <a class="btn btn-primary float-right" href="{{ route('admin.blogs.index')}}">Back</a>
+                    <a class="btn btn-primary float-right" href="{{ route('admin.blogs.index') }}">Back</a>
                 </div>
                 @if (isset($blog))
                     <form action="{{ route('admin.blogs.update', ['blog' => $blog->slug]) }}" method="post"
@@ -31,7 +31,8 @@
                 <div class="form-group row mt-5">
                     <label for="staticEmail" class="col-sm-2 col-form-label">Title</label>
                     <div class="col-sm-10">
-                        <input type="text" id="title" name="title" class="form-control" placeholder="Please enter title"
+                        <input type="text" id="title" name="title" class="form-control"
+                            placeholder="Please enter title"
                             @if (isset($blog)) value="{{ old('title', $blog->title) }}">
                                     @else
                                     value="{{ old('title') }}"> @endif
@@ -53,6 +54,25 @@
                                 @endforeach
                             </select>
                             @error('category_id')
+                                <span class="text-danger"> {{ $message }} </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Tags</label>
+                        <div class="col-sm-9 mt-3">
+                            <select class="form-select changeUserStatus" multiple name="tags[]" aria-label="Default select example">
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}"
+                                        @if (isset($blog))
+                                         @foreach ($blog->tags as $blogTag)
+                                        {{ $tag->id == $blogTag->id ? 'selected' : '' }} 
+                                        @endforeach @endif>
+                                        {{ $tag->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('tags')
                                 <span class="text-danger"> {{ $message }} </span>
                             @enderror
                         </div>
@@ -88,7 +108,8 @@
                         <div class="form-group row mt-5">
                             <label for="staticEmail" class="col-sm-2 col-form-label">Banner</label>
                             <div class="col-sm-10">
-                                <input type="file"  accept="image/png, image/jpeg, image/jpg" id="banner" id="banner" name="banner" class="form-control">
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" id="banner"
+                                    id="banner" name="banner" class="form-control">
                                 @error('banner')
                                     <span class="text-danger"> {{ $message }} </span>
                                 @enderror

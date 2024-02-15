@@ -27,7 +27,7 @@
                 <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12">
                     <div class="page-wrapper">
                         <div class="blog-title-area">
-                            <span class="color-green"><a href="garden-category.html"
+                            <span class="color-green"><a href=""
                                     title="">{{ $post->category->name }}</a></span>
                             <h3>{{ $post->title }}</h3>
                            

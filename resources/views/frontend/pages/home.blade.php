@@ -73,11 +73,16 @@
                                          </div><!-- end col -->
 
                                          <div class="blog-meta big-meta col-md-8">
-                                             <span class="bg-aqua">
-                                                 <a href="" title="">
-                                                     {{ $blog->category->name }}
-                                                 </a>
-                                             </span>
+
+                                             @foreach ($blog->tags as $tag)
+                                                 <span class="bg-aqua mr-1">
+                                                     <a href="" title="">
+                                                         {{ $tag->name }}
+                                                     </a>
+                                                 </span>
+                                             @endforeach
+
+
                                              <h4><a href="{{ route('posts.show', ['slug' => $blog->slug]) }}"
                                                      title="">{{ $blog->title }}</a></h4>
                                              <p>{{ $blog->excerpt }}</p>
@@ -107,8 +112,8 @@
                                  <h2 class="widget-title">Search</h2>
                                  <form action="{{ route('home') }}" method="get" class="form-inline search-form">
                                      <div class="form-group">
-                                         <input type="text" value="{{ request('q') }}" id="form1"
-                                             name="q" class="form-control" placeholder="Search Blog Title">
+                                         <input type="text" value="{{ request('q') }}" id="form1" name="q"
+                                             class="form-control" placeholder="Search Blog Title">
                                      </div>
                                      <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                  </form>

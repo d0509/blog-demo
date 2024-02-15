@@ -38,16 +38,16 @@ class AuthService
 
     public function signIn($inputs)
     {
-        $user = User::whereEmail($inputs['email'])->exists();
+        $user = $this->userObj->whereEmail($inputs['email'])->exists();
 
         if ($user) {
-            $user = User::whereEmail($inputs['email'])->first();
+            $user = $this->userObj->whereEmail($inputs['email'])->first();
             if ($user->status == 'approved') {
-                if (!Auth::attempt($inputs)) {
+                if (!Auth::attempt($inputs)) { 
                     throw ValidationException::withMessages([
                         'email' => 'Your provided credentials could not be verified.'
                     ]);
-                }
+                } 
             } elseif($user->status == 'pending') {
                 throw ValidationException::withMessages([
                     'email' => 'You are not approved by the admin. Please contact admin to login.'

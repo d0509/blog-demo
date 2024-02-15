@@ -15,8 +15,13 @@
                     </a>
                     <a class="nav-link {{in_array(Route::currentRouteName(), ['admin.categories.index', 'admin.categories.edit','admin.categories.create']) ? 'active' : '' }}"
                         href="{{ route('admin.categories.index') }}">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-list"></i></div>
                         Categories
+                    </a>
+                    <a class="nav-link {{in_array(Route::currentRouteName(), ['admin.tags.index','admin.categories.create']) ? 'active' : '' }}"
+                        href="{{ route('admin.tags.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
+                        Tags
                     </a>
                     <a class="nav-link {{in_array(Route::currentRouteName(), ['admin.blogs.index', 'admin.blogs.edit','admin.blogs.create','admin.blogs.show']) ? 'active' : '' }}"
                         href="{{ route('admin.blogs.index') }}">
