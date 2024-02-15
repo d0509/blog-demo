@@ -20,7 +20,7 @@ class PostService
 
     public function collection($isForListing = false)
     {
-        $query = Post::select("*")->with('category');
+        $query =$this->postObj->select("*")->with('category');
 
         if (Auth::user() && Auth::user()->hasRole(config('site.roles.admin'))) {
             $query->whereHas('category', function ($q) {
@@ -70,17 +70,16 @@ class PostService
 
     protected function userListing($query)
     {
-        $query = Post::select("*")->with('category');
+        $query = $this->postObj->select("*")->with('category')->whereStatus('publish');
         if (request('q')) {
-            $blogs = $query->Search(request('qp'))->whereStatus('publish')->latest()->get();
+            $blogs = $query->Search(request('qp'))->latest()->get();
             return $blogs;
         } elseif (request('category')) {
-
-            $blogs = $query->InCategory(request('category'))->whereStatus('publish')->latest()->get();
+            $blogs = $query->InCategory(request('category'))->latest()->get();
             return $blogs;
         } else {
-            $query = Post::select("*")->with('category');
-            $blogs = Post::with('category')
+            $query =$this->postObj->select("*")->with('category');
+            $blogs = $this->postObj->with('category')
                 ->where('status', 'publish')
                 ->whereHas('category', function ($query) {
                     $query->where('is_active', 1);
@@ -93,7 +92,7 @@ class PostService
 
     public function resource($slug)
     {
-        $blog = Post::whereSlug($slug)->first();
+        $blog = $this->postObj->whereSlug($slug)->first();
         if (!$blog) {
             return ['message' => "No Blogs found"];
         }
@@ -135,7 +134,7 @@ class PostService
 
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->postObj->findOrFail($id);
         $postBannerImage = $post->firstMedia('banner');
         if ($post) {
             $postBannerImage->delete();

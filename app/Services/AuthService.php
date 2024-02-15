@@ -38,10 +38,10 @@ class AuthService
 
     public function signIn($inputs)
     {
-        $user = User::whereEmail($inputs['email'])->exists();
+        $user = $this->userObj->whereEmail($inputs['email'])->exists();
 
         if ($user) {
-            $user = User::whereEmail($inputs['email'])->first();
+            $user = $this->userObj->whereEmail($inputs['email'])->first();
             if ($user->status == 'approved') {
                 if (!Auth::attempt($inputs)) { 
                     throw ValidationException::withMessages([

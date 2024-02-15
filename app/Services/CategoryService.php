@@ -15,11 +15,11 @@ class CategoryService
         $this->categoryObj = new Category();
     }
 
-    public function collection($isForListing = false)
+    public function collection($isDropdown = false)
     {
-        if ($isForListing == false) {
-            $data = Category::select('id', 'name', 'is_active', 'slug');
-            return DataTables::of($data)
+        $categories = $this->categoryObj->select('id', 'name', 'is_active', 'slug');
+        if (!$isDropdown) {
+            $data = DataTables::of($categories)
                 ->addColumn('action', function ($row) {
                     $editURL = route('admin.categories.edit', ['category' => $row->slug]);
                     $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteCategory(' . $row->id . ')" > <i class="fas fa-trash"></i></a><a href="' . $editURL . '" class="text-white  w-3 btn btn-primary mr-2"> <i class="fa-solid fa-pen-to-square"></i></a></div>';
@@ -43,9 +43,9 @@ class CategoryService
                 ->addIndexColumn()
                 ->make(true);
         } else {
-            $data = Category::select('slug', 'name', 'id')->where('is_active', 1)->get();
-            return $data;
+            $data = $categories->where('is_active', 1)->get();
         }
+        return $data;
     }
 
     public function store($inputs)
@@ -57,13 +57,13 @@ class CategoryService
 
     public function resource(string $slug)
     {
-        $category =  Category::whereSlug($slug)->first();
+        $category =  $this->categoryObj->whereSlug($slug)->first();
         return $category;
     }
 
     public function update($inputs, $slug)
     {
-        $category = Category::whereSlug($slug)->first();
+        $category = $this->categoryObj->whereSlug($slug)->first();
         $category->update($inputs->except('slug'));
         $category->save();
         toastr()->closeButton()->addSuccess(__('entity.entityUpdated', ['entity' => 'Category']));
@@ -72,7 +72,7 @@ class CategoryService
 
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->categoryObj->findOrFail($id);
         if ($category) {
             $category->delete();
         }
@@ -81,7 +81,7 @@ class CategoryService
 
     public function changeStatus($inputs)
     {
-        $category = Category::whereId($inputs->id)->first();
+        $category = $this->categoryObj->whereId($inputs->id)->first();
         $updatedStatus = $category->is_active == 0 ? 1 : 0;
         $category->update([
             'is_active' => $updatedStatus,

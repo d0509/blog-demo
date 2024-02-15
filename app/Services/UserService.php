@@ -17,7 +17,7 @@ class UserService
 
     public function collection()
     {
-        $data = User::select(['id', 'first_name', 'last_name', 'email', 'mobile_no', 'status']);
+        $data = $this->userObj->select(['id', 'first_name', 'last_name', 'email', 'mobile_no', 'status']);
         return DataTables::of($data)
             ->orderColumn('name', function ($query, $order) {
                 $query->orderBy('id', $order);
@@ -30,7 +30,7 @@ class UserService
 
     public function changeStatus($inputs)
     {
-        $user = User::findOrFail($inputs->userId);
+        $user = $this->userObj->findOrFail($inputs->userId);
         if ($user) {
             $user->update([
                 'status' => $inputs->status

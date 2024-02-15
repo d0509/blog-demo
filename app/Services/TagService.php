@@ -15,11 +15,12 @@ class TagService
         $this->tagObj = new Tag();
     }
 
-    public function collection($isForListing = false)
+    public function collection($isDropdown = false)
     {
-        if ($isForListing == false) {
-            $data = $this->tagObj->select('id', 'name');
-            return DataTables::of($data)
+        $tags = $this->tagObj->select('id', 'name');
+
+        if (!$isDropdown) {
+            $data = DataTables::of($tags)
                 ->addColumn('action', function ($row) {
                     $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteTag(' . $row->id . ')" > <i class="fas fa-trash"></i></a></div>';
                     return $btn;
@@ -32,9 +33,9 @@ class TagService
                 ->addIndexColumn()
                 ->make(true);
         } else {
-            $data = $this->tagObj->select('name', 'id')->get();
-            return $data;
+           $data = $tags->get();
         }
+        return $data;
     }
 
     public function store($inputs)
