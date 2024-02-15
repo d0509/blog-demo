@@ -14,16 +14,16 @@ class TagService
         $this->tagObj = new Tag();
     }
 
-    public function collection($tagListing = false)
+    public function collection($retrieveAllTags = false)
     {
-        $query = Tag::select('id', 'name');
-        
-        if ($tagListing) {
-            return $query->get();
+        $tagsQuery = Tag::select('id', 'name');
+
+        if ($retrieveAllTags) {
+            return $tagsQuery->get();
         }
-        return DataTables::of($query)
-            ->addColumn('action', function ($row) {
-                $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteTag(' . $row->id . ')" > <i class="fas fa-trash"></i></a></div>';
+        return DataTables::of($tagsQuery)
+            ->addColumn('action', function ($tag) {
+                $btn = '<div class="d-flex justify-content-space"><a style="margin-right: 8px;" class="text-white w-3 btn btn-danger mr-2" onclick="deleteTag(' . $tag->id . ')" > <i class="fas fa-trash"></i></a></div>';
                 return $btn;
             })
             ->orderColumn('name', function ($query, $order) {
@@ -41,12 +41,10 @@ class TagService
         toastr()->closeButton()->addSuccess(__('entity.entityCreated', ['entity' => 'Tag']));
         return redirect()->route('admin.tags.index');
     }
-    public function destroy($id)
+
+    public function destroy($tag)
     {
-        $tag = Tag::findOrFail($id);
-        if ($tag) {
-            $tag->delete();
-        }
+        $tag->delete();
         return response()->json(['message' => __('entity.entityDeleted', ['entity' => 'Tag'])]);
     }
 }

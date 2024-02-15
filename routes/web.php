@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('change-status', UserStatusController::class)->name('change-status');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('blogs', AdminPostController::class);
-        Route::resource('tags', TagController::class)->only(['index', 'create', 'store','destroy']);;
+        Route::resource('tags', TagController::class);
 
         Route::post('categories/change-status', CategoryStatusController::class)->name('categories.status');
     });
