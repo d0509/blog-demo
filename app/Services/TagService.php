@@ -14,11 +14,11 @@ class TagService
         $this->tagObj = new Tag();
     }
 
-    public function collection($dropdownTagList = false)
+    public function collection($isDropdownTagList = false)
     {
         $tagsQuery = Tag::select('id', 'name');
 
-        if ($dropdownTagList) {
+        if ($isDropdownTagList) {
             return $tagsQuery->get();
         }
         return DataTables::of($tagsQuery)
