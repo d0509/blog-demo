@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CategoryStatusController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserStatusController;
 use App\Http\Controllers\HomeController;
@@ -31,6 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::post('change-status', UserStatusController::class)->name('change-status');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('blogs', AdminPostController::class);
+        Route::resource('tags', TagController::class);
+
         Route::post('categories/change-status', CategoryStatusController::class)->name('categories.status');
     });
 });

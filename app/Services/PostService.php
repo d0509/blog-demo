@@ -105,11 +105,17 @@ class PostService
 
     public function upsert($inputs, $slug = null)
     {
-        // dd($slug);
         $post = $slug ? $this->postObj->whereSlug($slug)->first() : $this->postObj;
 
         $post->fill($inputs->except('old_banner'));
         $post->save();
+
+        // Attach tags
+        if ($inputs->has('tags')) {
+            $tags = $inputs->get('tags');
+            $post->tags()->sync($tags);
+        }
+
         $message = $slug ? __('entity.entityUpdated', ['entity' => 'Blog']) : __('entity.entityCreated', ['entity' => 'Blog']);
 
         $this->handleImageUpload($inputs, $post);
@@ -140,6 +146,7 @@ class PostService
         if ($post) {
             $post->delete();
             $postBannerImage->delete();
+            $post->tags()->detach();
         }
         return response()->json(['message' => 'Blog deleted successfully']);
     }

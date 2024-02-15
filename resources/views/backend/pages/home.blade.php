@@ -1,9 +1,8 @@
 @extends('backend.master.layout')
 @section('contentHeader')
-    <title>{{ env('APP_NAME') }} | {{__('headers.dashboard')}} </title>
+    <title>{{ env('APP_NAME') }} | {{ __('headers.dashboard') }} </title>
 @endsection
 @section('content')
-
     <div class="container-fluid px-4">
         <main>
             <div class="container-fluid px-4">
@@ -17,7 +16,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-white text-uppercase mb-1">
-                                             Users</div>
+                                            Users</div>
                                         <div class="h5 mb-0 font-weight-bold text-gray-800"> {{ $usersCount }} </div>
                                     </div>
                                     <div class="col-auto">
@@ -90,7 +89,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-chart-bar me-1"></i>
-                                Categorized Blog Post 
+                                Categorized Blog Post
                             </div>
                             <div class="card-body"><canvas id="myPieChart" width="100%" height="40"></canvas></div>
                         </div>
